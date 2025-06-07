@@ -669,12 +669,20 @@ body {
 
 @media (max-width: 480px) {
   .container {
-    padding: 20px 20px;
+    padding: 20px 15px;
   }
 
   .main-title {
-    font-size: 2.5rem;
+    font-size: 2.2rem;
     letter-spacing: -1px;
+    line-height: 0.95;
+    word-break: break-word;
+    hyphens: auto;
+  }
+
+  .typewriter {
+    white-space: normal;
+    text-align: center;
   }
 
   .chapter-item {
@@ -691,6 +699,172 @@ body {
     flex-direction: column;
     gap: 10px;
     text-align: center;
+  }
+
+  .vintage-border {
+    top: 10px;
+    left: 10px;
+    right: 10px;
+    bottom: 10px;
+  }
+
+  .vintage-border::before {
+    top: 8px;
+    left: 8px;
+    right: 8px;
+    bottom: 8px;
+  }
+
+  .title-underline {
+    width: 150px;
+  }
+
+  .ornament-line {
+    width: 50px;
+  }
+
+  .subtitle {
+    font-size: 1.1rem;
+    padding: 0 10px;
+  }
+
+  .chapters-title {
+    font-size: 2rem;
+  }
+
+  .chapter-title-large {
+    font-size: 2rem;
+    line-height: 1.1;
+  }
+
+  .chapter-number-large {
+    font-size: 4rem;
+    margin-bottom: -20px;
+  }
+
+  .paragraph {
+    font-size: 1.1rem;
+    text-indent: 1em;
+  }
+
+  .paragraph:first-child::first-letter {
+    font-size: 3rem;
+    line-height: 2.5rem;
+  }
+}
+
+/* Extra small screens (iPhone SE, etc.) */
+@media (max-width: 375px) {
+  .container {
+    padding: 15px 10px;
+  }
+
+  .main-title {
+    font-size: 1.9rem;
+    letter-spacing: -0.5px;
+  }
+
+  .vintage-border {
+    top: 8px;
+    left: 8px;
+    right: 8px;
+    bottom: 8px;
+  }
+
+  .vintage-border::before {
+    top: 6px;
+    left: 6px;
+    right: 6px;
+    bottom: 6px;
+  }
+
+  .header-meta {
+    font-size: 10px;
+  }
+
+  .chapters-title {
+    font-size: 1.8rem;
+  }
+}
+
+/* Very small screens (iPhone 5/SE in portrait) */
+@media (max-width: 320px) {
+  .main-title {
+    font-size: 1rem;
+    letter-spacing: 0;
+  }
+
+  .subtitle {
+    font-size: 1rem;
+    line-height: 1.6;
+  }
+
+  .chapter-title-large {
+    font-size: 1.8rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .main-title {
+    font-size: 1.7rem;
+    letter-spacing: 0;
+  }
+
+  .subtitle {
+    font-size: 1rem;
+    line-height: 1.6;
+  }
+
+  .chapter-title-large {
+    font-size: 1.8rem;
+  }
+}
+
+@media (max-width: 650px) {
+  .main-title {
+    font-size: 2rem;
+    letter-spacing: 0;
+  }
+
+  .subtitle {
+    font-size: 1rem;
+    line-height: 1.6;
+  }
+
+  .chapter-title-large {
+    font-size: 1.8rem;
+  }
+}
+
+@media (max-width: 770px) {
+  .main-title {
+    font-size: 2.5rem;
+    letter-spacing: 0;
+  }
+
+  .subtitle {
+    font-size: 1rem;
+    line-height: 1.6;
+  }
+
+  .chapter-title-large {
+    font-size: 1.8rem;
+  }
+}
+
+@media (max-width: 900px) {
+  .main-title {
+    font-size: 3.2rem;
+    letter-spacing: 0;
+  }
+
+  .subtitle {
+    font-size: 1rem;
+    line-height: 1.6;
+  }
+
+  .chapter-title-large {
+    font-size: 1.8rem;
   }
 }
 
