@@ -139,7 +139,7 @@ function TableOfContents({ chapters, onChapterClick, isTransitioning }) {
               of fragments—beautiful in their incompleteness."
             </em>
           </p>
-          <div className="author-signature">— Anonymous, 2024</div>
+          <div className="author-signature">— Venuja, 2025</div>
         </div>
 
         <div className="chapters-section">
@@ -216,62 +216,61 @@ function ChapterPage({ chapter, onBack, isTransitioning, mousePosition }) {
     const contents = {
       1: {
         content: `Dear Reader,
-        
-        This is the book I never planned to write.
-        
-        It was born not out of ambition, but out of silence — the kind that grows louder with time. You know the kind I’m talking about. The silence between who you are and who you appear to be. The silence between memories you try to forget and truths you’ve never told. The silence that follows you into dreams, lectures, love, and loneliness.
-        
-        I once believed some stories were better left untold — especially mine. I’m not famous. I’m not broken in the poetic way people romanticize. I don’t have the kind of success that turns heads or a tragedy that earns applause. But I have a story. We all do. And this is mine.
-        
-        The Book I Never Wrote is not just about events. It’s about moments — raw, quiet, powerful ones — that shaped me. It’s about growth in the face of doubt, love in the shadow of fear, and finding purpose in confusion. It’s about the chapters of my life I never gave myself permission to explore… until now.
-        
-        If you’re here, reading this, maybe you’ve got your own unwritten book too. Maybe you’ve whispered your story into the dark, hoping someone, someday, might hear it. Maybe this is your sign to write it.
-        
-        I can’t promise you perfect prose or profound wisdom. But I can promise honesty. And sometimes, that’s enough.
-        
-        So come with me — not as a reader, but as a companion. Let’s flip through these pages together. Not to relive the past, but to understand how it brought me here. How every silence had a voice. Every scar, a sentence. Every version of me… a story.
-        
-        This is The Book I Never Wrote.
-        
-        But now, I finally am.
-        
-        With love,
-        Venuja`,
+
+This is the book I never planned to write.
+
+It was born not out of ambition, but out of silence — the kind that grows louder with time. You know the kind I’m talking about. The silence between who you are and who you appear to be. The silence between memories you try to forget and truths you’ve never told. The silence that follows you into dreams, lectures, love, and loneliness.
+
+I once believed some stories were better left untold — especially mine. I’m not famous. I’m not broken in the poetic way people romanticize. I don’t have the kind of success that turns heads or a tragedy that earns applause. But I have a story. We all do. And this is mine.
+
+The Book I Never Wrote is not just about events. It’s about moments — raw, quiet, powerful ones — that shaped me. It’s about growth in the face of doubt, love in the shadow of fear, and finding purpose in confusion. It’s about the chapters of my life I never gave myself permission to explore… until now.
+
+If you’re here, reading this, maybe you’ve got your own unwritten book too. Maybe you’ve whispered your story into the dark, hoping someone, someday, might hear it. Maybe this is your sign to write it.
+
+I can’t promise you perfect prose or profound wisdom. But I can promise honesty. And sometimes, that’s enough.
+
+So come with me — not as a reader, but as a companion. Let’s flip through these pages together. Not to relive the past, but to understand how it brought me here. How every silence had a voice. Every scar, a sentence. Every version of me… a story.
+
+The wise programmer learns to set timeouts on their thoughts.
+
+But now, I finally am.
+
+With love,
+Venuja`,
         footnotes: [
           "This is the book I never planned to write. ¹ Sometimes, the most necessary things in life are the ones we avoid the longest.",
           "You know the kind I’m talking about. The silence between who you are and who you appear to be. ² Pretending is easier than explaining — especially when you’re still figuring it out yourself.",
-          ,
         ],
       },
-      2: {
-        content: `The mind, when left to its own devices, becomes a recursive function with no base case. It loops endlessly, processing the same inputs, generating the same outputs, consuming memory until the system crashes.
+//       2: {
+//         content: `The mind, when left to its own devices, becomes a recursive function with no base case. It loops endlessly, processing the same inputs, generating the same outputs, consuming memory until the system crashes.
 
-Consider the simple act of sending a text message. The algorithm begins:
-- Compose message
-- Review for tone  
-- Consider recipient's possible interpretations
-- Revise message
-- Question necessity of message
-- Return to step 2
+// Consider the simple act of sending a text message. The algorithm begins:
+// - Compose message
+// - Review for tone  
+// - Consider recipient's possible interpretations
+// - Revise message
+// - Question necessity of message
+// - Return to step 2
 
-The loop continues until external intervention—a deadline, exhaustion, or the merciful distraction of another task—forces termination.
+// The loop continues until external intervention—a deadline, exhaustion, or the merciful distraction of another task—forces termination.
 
-The debugging process reveals the flaw: we optimize for problems that don't exist, edge cases that never occur, user scenarios that live only in our imagination.
+// The debugging process reveals the flaw: we optimize for problems that don't exist, edge cases that never occur, user scenarios that live only in our imagination.
 
-The solution isn't better logic. It's learning when to ship buggy code.
+// The solution isn't better logic. It's learning when to ship buggy code.
 
-In the architecture of anxiety, every thought spawns three more. Each worry branches into a tree of possibilities, each possibility into a forest of contingencies. The computational complexity grows exponentially until the system becomes unresponsive.
+// In the architecture of anxiety, every thought spawns three more. Each worry branches into a tree of possibilities, each possibility into a forest of contingencies. The computational complexity grows exponentially until the system becomes unresponsive.
 
-The wise programmer learns to set timeouts on their thoughts.`,
-        footnotes: [
-          "¹ Computer scientists call this an infinite loop. Therapists call it anxiety.",
-          "² The 'good enough' principle applies to both software and social interactions.",
-          "³ Premature optimization is the root of all evil, in code and in life.",
-        ],
-      },
+// The wise programmer learns to set timeouts on their thoughts.`,
+//         footnotes: [
+//           "¹ Computer scientists call this an infinite loop. Therapists call it anxiety.",
+//           "² The 'good enough' principle applies to both software and social interactions.",
+//           "³ Premature optimization is the root of all evil, in code and in life.",
+//         ],
+//       },
       // Add more chapters as needed...
     }
-    return contents[chapterId] || { content: "Chapter content not found.", footnotes: [] }
+    return contents[chapterId] || { content: "Chapter content coming soon...", footnotes: [] }
   }
 
   const content = getChapterContent(chapter.id)
