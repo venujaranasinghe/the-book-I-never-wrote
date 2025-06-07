@@ -4,18 +4,23 @@ import { useState, useEffect } from "react"
 import "./App.css"
 
 const chapters = [
-  { id: 1, title: "Things I know without proof", subtitle: "On intuition and unverifiable truths", year: "1987" },
-  { id: 2, title: "The algorithm of overthinking", subtitle: "A recursive function with no base case", year: "1991" },
-  { id: 3, title: "The debugging mindset", subtitle: "Life as a series of logical errors", year: "1994" },
-  { id: 4, title: "404: Motivation Not Found", subtitle: "When the server of self fails to respond", year: "1998" },
+  { id: 1, title: "The Prologue: A Letter to the Reader", subtitle: "The truth behind the silence, and the courage it took to break it", year: "1987" },
+  { id: 2, title: "When I was Just a Name", subtitle: "Before I knew who I was, the world had already started shaping me", year: "1987" },
+  { id: 3, title: "A Small World with Big Dreams", subtitle: "On intuition and unverifiable truths", year: "1987" },
+  { id: 4, title: "The algorithm of overthinking", subtitle: "How a quiet boy with wide eyes began to see beyond the map he was given", year: "1991" },
+  { id: 5, title: "Love in a Time of Chaos", subtitle: "What it meant to care, to lose, and to hold on - even in the storm", year: "1987" },
+  { id: 6, title: "The debugging mindset", subtitle: "Life as a series of logical errors", year: "1994" },
+  { id: 7, title: "404: Motivation Not Found", subtitle: "When the server of self fails to respond", year: "1998" },
+  { id: 8, title: "Code, Coffee, and Chaos", subtitle: "My journey through computer science, late nights, and chasing clarity through logic", year: "1987" },
   {
-    id: 5,
+    id: 9,
     title: "My mind is a monolith, not a microservice",
     subtitle: "On the architecture of consciousness",
     year: "2003",
   },
-  { id: 6, title: "Theories I'll never publish", subtitle: "Academic thoughts in perpetual draft", year: "2007" },
-  { id: 7, title: "Why I love broken things", subtitle: "Beauty in imperfection and incomplete systems", year: "2012" },
+  { id: 10, title: "Theories I'll never publish", subtitle: "Academic thoughts in perpetual draft", year: "2007" },
+  { id: 11, title: "Why I love broken things", subtitle: "Beauty in imperfection and incomplete systems", year: "2012" },
+  { id: 12, title: "The Book I Never Wrote... Until Now", subtitle: "The story that lived me, waiting for a voice and a page", year: "1987" },
 ]
 
 function App() {
@@ -210,21 +215,32 @@ function ChapterPage({ chapter, onBack, isTransitioning, mousePosition }) {
   const getChapterContent = (chapterId) => {
     const contents = {
       1: {
-        content: `There are truths I carry that have no citations, no peer reviews, no empirical backing. They live in the space between logic and faith, in the quiet certainty that comes from years of observation without documentation.
-
-I know that 3 AM thoughts are always more honest than noon declarations. I know that the best ideas come during walks, never during meetings. I know that people who say "I'm not good with technology" are often the most creative problem solvers when the stakes are personal.
-
-These knowings accumulate like sediment, layer upon layer of unverifiable experience. They form the bedrock of decision-making, the invisible infrastructure of intuition.
-
-Perhaps the most dangerous thing about knowledge without proof is how right it usually turns out to be.
-
-In the margins of textbooks, I've written theories that will never be published. In the quiet moments between sleep and waking, I've discovered principles that govern the universe of personal experience.
-
-The academy demands evidence, but life operates on hunches. The laboratory requires control groups, but wisdom emerges from chaos. The peer review process filters out the very insights that make existence bearable.`,
+        content: `Dear Reader,
+        
+        This is the book I never planned to write.
+        
+        It was born not out of ambition, but out of silence — the kind that grows louder with time. You know the kind I’m talking about. The silence between who you are and who you appear to be. The silence between memories you try to forget and truths you’ve never told. The silence that follows you into dreams, lectures, love, and loneliness.
+        
+        I once believed some stories were better left untold — especially mine. I’m not famous. I’m not broken in the poetic way people romanticize. I don’t have the kind of success that turns heads or a tragedy that earns applause. But I have a story. We all do. And this is mine.
+        
+        The Book I Never Wrote is not just about events. It’s about moments — raw, quiet, powerful ones — that shaped me. It’s about growth in the face of doubt, love in the shadow of fear, and finding purpose in confusion. It’s about the chapters of my life I never gave myself permission to explore… until now.
+        
+        If you’re here, reading this, maybe you’ve got your own unwritten book too. Maybe you’ve whispered your story into the dark, hoping someone, someday, might hear it. Maybe this is your sign to write it.
+        
+        I can’t promise you perfect prose or profound wisdom. But I can promise honesty. And sometimes, that’s enough.
+        
+        So come with me — not as a reader, but as a companion. Let’s flip through these pages together. Not to relive the past, but to understand how it brought me here. How every silence had a voice. Every scar, a sentence. Every version of me… a story.
+        
+        This is The Book I Never Wrote.
+        
+        But now, I finally am.
+        
+        With love,
+        Venuja`,
         footnotes: [
-          "¹ The phenomenon of late-night clarity remains unstudied by sleep researchers, though every writer knows its truth.",
-          "² Walking meetings were invented by someone who understood this principle, then forgotten by everyone who scheduled them in conference rooms.",
-          "³ Intuition is the sum of all forgotten calculations.",
+          "This is the book I never planned to write. ¹ Sometimes, the most necessary things in life are the ones we avoid the longest.",
+          "You know the kind I’m talking about. The silence between who you are and who you appear to be. ² Pretending is easier than explaining — especially when you’re still figuring it out yourself.",
+          ,
         ],
       },
       2: {
