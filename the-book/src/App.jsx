@@ -242,6 +242,25 @@ Venuja`,
           "You know the kind I’m talking about. The silence between who you are and who you appear to be. ² Pretending is easier than explaining — especially when you’re still figuring it out yourself.",
         ],
       },
+      2: {
+        content: `It was just six letters given to me by my parents, a name. But to me, it's always been more than just six letters.
+
+Before I even understood who I was, the world began shaping me. Not with force, but with a quiet, persistent pressure, like water slowly carving stone. Silent. Patient. Unstoppable.
+
+Most of the time, I knew the shaping was meant for my good. Yet, I couldn’t help but wonder: is this truly what my heart longs for? I was afraid to listen to that quiet voice within — the one that questioned, doubted, and yearned for something more.
+
+Somewhere along the way, I became someone I didn’t fully recognize. Not because I had done something wrong, but because I had become a version of myself that wasn’t entirely mine. And I was too afraid to take that uncertain step forward.
+
+But life has a strange way of whispering truths when you least expect them.
+
+One night, I sat in front of a glowing screen — tired, restless, and seeking something I couldn’t name. I opened a blank editor. No assignments. No instructions. Just space.
+I began to type — not knowing what I was building. And it didn’t matter.
+Because for the first time, I wasn’t following. I was creating.
+I wasn’t asking what was expected. I was finally listening to myself.
+
+Now, it's my turn to shape who I am.`,
+        footnotes: [],
+      },
 //       2: {
 //         content: `The mind, when left to its own devices, becomes a recursive function with no base case. It loops endlessly, processing the same inputs, generating the same outputs, consuming memory until the system crashes.
 
