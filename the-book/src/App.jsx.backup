@@ -8,7 +8,8 @@ import SharePage from "./SharePage"
 
 const defaultChapters = [
   { id: 1, title: "The Prologue: A Letter to the Reader", subtitle: "The truth behind the silence, and the courage it took to break it", year: "childhood" },
-  { id: 2, title: "When I was Just a Name", subtitle: "Before I knew who I was, the world had already started shaping me", year: "childhood" },
+  { id: 2, title: "When I was Just a N
+  const content = getChapterContent(chapter.id, user)title: "Before I knew who I was, the world had already started shaping me", year: "childhood" },
   { id: 3, title: "A Small World with Big Dreams", subtitle: "On intuition and unverifiable truths", year: "childhood" },
   { id: 4, title: "The Algorithm of Growing Up", subtitle: "How a quiet soul began to see beyond the map they were given", year: "youth" },
   { id: 5, title: "Love in a Time of Uncertainty", subtitle: "What it meant to care, to lose, and to hold on through the storm", year: "youth" },
@@ -388,6 +389,84 @@ Only time will tell, but one thing is certain: this story is far from over.`,
       footnotes: []
     }
   }
+    const contents = {
+      1: {
+        content: `Dear Reader,
+
+This is the book I never planned to write.
+
+It was born not out of ambition, but out of silence — the kind that grows louder with time. You know the kind I’m talking about. The silence between who you are and who you appear to be. The silence between memories you try to forget and truths you’ve never told. The silence that follows you into dreams, lectures, love, and loneliness.
+
+I once believed some stories were better left untold — especially mine. I’m not famous. I’m not broken in the poetic way people romanticize. I don’t have the kind of success that turns heads or a tragedy that earns applause. But I have a story. We all do. And this is mine.
+
+The Book I Never Wrote is not just about events. It’s about moments — raw, quiet, powerful ones — that shaped me. It’s about growth in the face of doubt, love in the shadow of fear, and finding purpose in confusion. It’s about the chapters of my life I never gave myself permission to explore… until now.
+
+If you’re here, reading this, maybe you’ve got your own unwritten book too. Maybe you’ve whispered your story into the dark, hoping someone, someday, might hear it. Maybe this is your sign to write it.
+
+I can’t promise you perfect prose or profound wisdom. But I can promise honesty. And sometimes, that’s enough.
+
+So come with me — not as a reader, but as a companion. Let’s flip through these pages together. Not to relive the past, but to understand how it brought me here. How every silence had a voice. Every scar, a sentence. Every version of me… a story.
+
+The wise programmer learns to set timeouts on their thoughts.
+
+But now, I finally am.
+
+With love,
+Venuja`,
+        footnotes: [
+          "This is the book I never planned to write. ¹ Sometimes, the most necessary things in life are the ones we avoid the longest.",
+          "You know the kind I’m talking about. The silence between who you are and who you appear to be. ² Pretending is easier than explaining — especially when you’re still figuring it out yourself.",
+        ],
+      },
+      2: {
+        content: `It was just six letters given to me by my parents, a name. But to me, it's always been more than just six letters.
+
+Before I even understood who I was, the world began shaping me. Not with force, but with a quiet, persistent pressure, like water slowly carving stone. Silent. Patient. Unstoppable.
+
+Most of the time, I knew the shaping was meant for my good. Yet, I couldn’t help but wonder: is this truly what my heart longs for? I was afraid to listen to that quiet voice within — the one that questioned, doubted, and yearned for something more.
+
+Somewhere along the way, I became someone I didn’t fully recognize. Not because I had done something wrong, but because I had become a version of myself that wasn’t entirely mine. And I was too afraid to take that uncertain step forward.
+
+But life has a strange way of whispering truths when you least expect them.
+
+One night, I sat in front of a glowing screen — tired, restless, and seeking something I couldn’t name. I opened a blank editor. No assignments. No instructions. Just space.
+I began to type — not knowing what I was building. And it didn’t matter.
+Because for the first time, I wasn’t following. I was creating.
+I wasn’t asking what was expected. I was finally listening to myself.
+
+Now, it's my turn to shape who I am.`,
+        footnotes: [],
+      },
+//       2: {
+//         content: `The mind, when left to its own devices, becomes a recursive function with no base case. It loops endlessly, processing the same inputs, generating the same outputs, consuming memory until the system crashes.
+
+// Consider the simple act of sending a text message. The algorithm begins:
+// - Compose message
+// - Review for tone  
+// - Consider recipient's possible interpretations
+// - Revise message
+// - Question necessity of message
+// - Return to step 2
+
+// The loop continues until external intervention—a deadline, exhaustion, or the merciful distraction of another task—forces termination.
+
+// The debugging process reveals the flaw: we optimize for problems that don't exist, edge cases that never occur, user scenarios that live only in our imagination.
+
+// The solution isn't better logic. It's learning when to ship buggy code.
+
+// In the architecture of anxiety, every thought spawns three more. Each worry branches into a tree of possibilities, each possibility into a forest of contingencies. The computational complexity grows exponentially until the system becomes unresponsive.
+
+// The wise programmer learns to set timeouts on their thoughts.`,
+//         footnotes: [
+//           "¹ Computer scientists call this an infinite loop. Therapists call it anxiety.",
+//           "² The 'good enough' principle applies to both software and social interactions.",
+//           "³ Premature optimization is the root of all evil, in code and in life.",
+//         ],
+//       },
+      // Add more chapters as needed...
+    }
+    return contents[chapterId] || { content: "Chapter content coming soon...", footnotes: [] }
+  }
 
   const content = getChapterContent(chapter.id, user)
 
@@ -458,7 +537,7 @@ Only time will tell, but one thing is certain: this story is far from over.`,
 }
 
 function toRoman(num) {
-  const romanNumerals = ["I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X", "XI", "XII"]
+  const romanNumerals = ["I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X"]
   return romanNumerals[num - 1] || num.toString()
 }
 

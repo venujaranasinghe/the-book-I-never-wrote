@@ -1,3 +1,482 @@
+/* Profile Page Styles */
+.profile-page .profile-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.profile-avatar {
+  border: 3px solid #e2cfa5;
+  background: #fffbe9;
+  box-shadow: 0 4px 24px #0002;
+}
+
+.profile-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.2rem;
+  margin: 0.5rem 0 0.2rem 0;
+  letter-spacing: 0.04em;
+}
+
+.profile-title {
+  font-size: 1.1rem;
+  color: #a08c5b;
+  margin-bottom: 1.5rem;
+  font-style: italic;
+}
+
+.profile-bio {
+  max-width: 600px;
+  margin: 0 auto 2rem auto;
+  font-size: 1.1rem;
+  color: #3d2c13;
+  text-align: center;
+}
+
+.profile-links {
+  display: flex;
+  justify-content: center;
+  gap: 1.2rem;
+  margin-top: 1.5rem;
+}
+
+.profile-link {
+  background: #e2cfa5;
+  color: #3d2c13;
+  border: 1.5px solid #a08c5b;
+  border-radius: 22px;
+  padding: 0.5rem 1.5rem;
+  font-family: 'Playfair Display', serif;
+  font-size: 1rem;
+  text-decoration: none;
+  transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+  box-shadow: 0 2px 8px #0001;
+  cursor: pointer;
+}
+.profile-link:hover {
+  background: #a08c5b;
+  color: #fffbe9;
+  box-shadow: 0 4px 16px #0002;
+}
+
+.profile-link-section {
+  display: flex;
+  justify-content: center;
+  margin-top: 1.5rem;
+}
+
+/* Authentication Page Styles */
+.auth-page {
+  padding: 2rem;
+}
+
+.auth-content {
+  max-width: 500px;
+  margin: 0 auto;
+  padding: 2rem 0;
+}
+
+.auth-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.auth-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.5rem;
+  color: #3d2c13;
+  margin-bottom: 0.5rem;
+}
+
+.auth-subtitle {
+  color: #a08c5b;
+  font-size: 1.1rem;
+  margin-bottom: 2rem;
+}
+
+.auth-form-container {
+  background: rgba(255, 251, 233, 0.7);
+  padding: 2rem;
+  border-radius: 12px;
+  border: 2px solid #e2cfa5;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+.auth-toggle {
+  display: flex;
+  margin-bottom: 2rem;
+  border-radius: 25px;
+  overflow: hidden;
+  border: 2px solid #e2cfa5;
+}
+
+.auth-toggle-btn {
+  flex: 1;
+  padding: 0.75rem 1.5rem;
+  background: transparent;
+  border: none;
+  font-family: 'Playfair Display', serif;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  color: #a08c5b;
+}
+
+.auth-toggle-btn.active {
+  background: #e2cfa5;
+  color: #3d2c13;
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-label {
+  font-family: 'Playfair Display', serif;
+  font-size: 1rem;
+  color: #3d2c13;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+}
+
+.form-input {
+  padding: 0.75rem 1rem;
+  border: 2px solid #e2cfa5;
+  border-radius: 8px;
+  background: #fffbe9;
+  font-family: 'Georgia', serif;
+  font-size: 1rem;
+  color: #3d2c13;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: #a08c5b;
+  box-shadow: 0 0 0 3px rgba(160, 140, 91, 0.1);
+}
+
+.form-input.error {
+  border-color: #c53030;
+}
+
+.form-textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.error-message {
+  color: #c53030;
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+  font-style: italic;
+}
+
+.general-error {
+  background: rgba(197, 48, 48, 0.1);
+  padding: 0.75rem;
+  border-radius: 6px;
+  border-left: 4px solid #c53030;
+  margin-bottom: 1rem;
+}
+
+.auth-submit-btn {
+  background: linear-gradient(135deg, #e2cfa5 0%, #a08c5b 100%);
+  color: #3d2c13;
+  border: none;
+  border-radius: 25px;
+  padding: 1rem 2rem;
+  font-family: 'Playfair Display', serif;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+}
+
+.auth-submit-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.15);
+}
+
+.auth-footer {
+  text-align: center;
+  margin-top: 2rem;
+}
+
+.auth-footer-text {
+  color: #a08c5b;
+  font-style: italic;
+  font-size: 1rem;
+}
+
+/* Header Actions */
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.logout-button {
+  background: rgba(226, 207, 165, 0.8);
+  color: #3d2c13;
+  border: 1px solid #a08c5b;
+  border-radius: 16px;
+  padding: 0.4rem 1rem;
+  font-family: 'Playfair Display', serif;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.logout-button:hover {
+  background: #a08c5b;
+  color: #fffbe9;
+}
+
+/* Share Page Styles */
+.share-page {
+  padding: 2rem;
+}
+
+.share-content {
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 2rem 0;
+}
+
+.share-header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.share-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.5rem;
+  color: #3d2c13;
+  margin-bottom: 0.5rem;
+}
+
+.share-subtitle {
+  color: #a08c5b;
+  font-size: 1.2rem;
+  margin-bottom: 2rem;
+}
+
+.share-link-section {
+  margin-bottom: 3rem;
+}
+
+.share-link-container {
+  background: rgba(255, 251, 233, 0.7);
+  padding: 2rem;
+  border-radius: 12px;
+  border: 2px solid #e2cfa5;
+}
+
+.share-link-label {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.1rem;
+  color: #3d2c13;
+  margin-bottom: 1rem;
+  display: block;
+  font-weight: 600;
+}
+
+.share-link-input-group {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.share-link-input {
+  flex: 1;
+  padding: 0.75rem;
+  border: 2px solid #e2cfa5;
+  border-radius: 8px;
+  background: #fffbe9;
+  font-family: 'Georgia', serif;
+  color: #3d2c13;
+  font-size: 0.9rem;
+}
+
+.copy-btn {
+  background: #e2cfa5;
+  color: #3d2c13;
+  border: 2px solid #a08c5b;
+  border-radius: 8px;
+  padding: 0.75rem 1.5rem;
+  font-family: 'Playfair Display', serif;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.copy-btn:hover {
+  background: #a08c5b;
+  color: #fffbe9;
+}
+
+.copy-btn.copied {
+  background: #48bb78;
+  color: white;
+  border-color: #38a169;
+}
+
+.share-options {
+  margin-bottom: 3rem;
+}
+
+.share-options-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.5rem;
+  color: #3d2c13;
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.share-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.share-btn {
+  background: #e2cfa5;
+  color: #3d2c13;
+  border: 2px solid #a08c5b;
+  border-radius: 20px;
+  padding: 0.75rem 1.5rem;
+  font-family: 'Playfair Display', serif;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.share-btn:hover {
+  background: #a08c5b;
+  color: #fffbe9;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.share-preview {
+  margin-bottom: 3rem;
+}
+
+.share-preview-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.5rem;
+  color: #3d2c13;
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.share-preview-card {
+  background: rgba(255, 251, 233, 0.8);
+  padding: 2rem;
+  border-radius: 12px;
+  border: 2px solid #e2cfa5;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+}
+
+.preview-header {
+  margin-bottom: 1rem;
+}
+
+.preview-book-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.3rem;
+  color: #3d2c13;
+  margin-bottom: 0.25rem;
+}
+
+.preview-author {
+  color: #a08c5b;
+  font-size: 1rem;
+  font-style: italic;
+}
+
+.preview-bio {
+  color: #3d2c13;
+  line-height: 1.6;
+  margin-bottom: 1rem;
+}
+
+.preview-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.9rem;
+  color: #a08c5b;
+}
+
+.share-tips {
+  text-align: center;
+}
+
+.tips-ornament {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+
+.tips-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.3rem;
+  color: #3d2c13;
+  margin-bottom: 1rem;
+}
+
+.tips-list {
+  text-align: left;
+  max-width: 500px;
+  margin: 0 auto;
+  color: #3d2c13;
+  line-height: 1.6;
+}
+
+.tips-list li {
+  margin-bottom: 0.5rem;
+}
+
+@media (max-width: 768px) {
+  .auth-content, .share-content {
+    padding: 1rem;
+  }
+  
+  .auth-form-container, .share-link-container, .share-preview-card {
+    padding: 1.5rem;
+  }
+  
+  .share-link-input-group {
+    flex-direction: column;
+  }
+  
+  .share-buttons {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .header-actions {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+}
 @import url("https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&display=swap");
 
 * {
