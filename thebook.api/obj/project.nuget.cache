@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "wuDQhcMfNzk=",
+  "success": true,
+  "projectFilePath": "/Users/venujaranasinghe/Documents/GitHub/the-book-I-never-wrote/thebook.api/thebook.api.csproj",
+  "expectedPackageFiles": [
+    "/Users/venujaranasinghe/.nuget/packages/microsoft.aspnetcore.openapi/9.0.7/microsoft.aspnetcore.openapi.9.0.7.nupkg.sha512",
+    "/Users/venujaranasinghe/.nuget/packages/microsoft.openapi/1.6.17/microsoft.openapi.1.6.17.nupkg.sha512"
+  ],
+  "logs": []
+}

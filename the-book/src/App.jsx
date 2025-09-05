@@ -5,6 +5,7 @@ import "./App.css"
 import ProfilePage from "./ProfilePage"
 import AuthPage from "./AuthPage"
 import SharePage from "./SharePage"
+import ApiTest from "./components/ApiTest"
 
 const defaultChapters = [
   { id: 1, title: "The Prologue: A Letter to the Reader", subtitle: "The truth behind the silence, and the courage it took to break it", year: "childhood" },
@@ -175,6 +176,10 @@ function App() {
         }}
       />
       <div className={`page-transition ${isTransitioning ? "active" : ""}`} />
+      
+      {/* Temporary API Test Component - Remove this after testing */}
+      <ApiTest />
+      
       <TableOfContents
         chapters={defaultChapters}
         user={activeUser}
