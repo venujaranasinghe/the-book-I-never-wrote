@@ -12,7 +12,7 @@ using thebook.api.Data;
 namespace thebook.api.Migrations
 {
     [DbContext(typeof(BookDbContext))]
-    [Migration("20250905031843_InitialCreate")]
+    [Migration("20250905141128_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -45,8 +45,8 @@ namespace thebook.api.Migrations
 
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime(6)")
-                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
+                        .HasColumnType("datetime")
+                        .HasDefaultValueSql("NOW()");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -66,8 +66,8 @@ namespace thebook.api.Migrations
 
                     b.Property<DateTime>("UpdatedAt")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime(6)")
-                        .HasDefaultValueSql("CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP");
+                        .HasColumnType("datetime")
+                        .HasDefaultValueSql("NOW() ON UPDATE NOW()");
 
                     b.Property<string>("Username")
                         .IsRequired()

@@ -1,16 +1,19 @@
 import { useState } from "react"
 import "./App.css"
+import apiService from "./services/api"
 
 export default function AuthPage({ onLogin, mousePosition }) {
   const [isLogin, setIsLogin] = useState(true)
   const [formData, setFormData] = useState({
-    name: "",
+    username: "",
+    fullName: "",
     email: "",
     birthYear: "",
     bio: "",
     password: ""
   })
   const [errors, setErrors] = useState({})
+  const [isLoading, setIsLoading] = useState(false)
 
   const handleInputChange = (e) => {
     const { name, value } = e.target
@@ -30,8 +33,14 @@ export default function AuthPage({ onLogin, mousePosition }) {
   const validateForm = () => {
     const newErrors = {}
     
-    if (!formData.name.trim()) {
-      newErrors.name = "Name is required"
+    if (!isLogin && !formData.username.trim()) {
+      newErrors.username = "Username is required"
+    } else if (!isLogin && formData.username.length < 3) {
+      newErrors.username = "Username must be at least 3 characters"
+    }
+    
+    if (!formData.fullName.trim()) {
+      newErrors.fullName = "Full name is required"
     }
     
     if (!formData.email.trim()) {
@@ -62,47 +71,55 @@ export default function AuthPage({ onLogin, mousePosition }) {
     return Object.keys(newErrors).length === 0
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
     
     if (!validateForm()) {
       return
     }
 
-    if (isLogin) {
-      // Check if user exists in localStorage
-      const users = JSON.parse(localStorage.getItem("memorialUsers") || "{}")
-      const user = users[formData.email]
-      
-      if (!user || user.password !== formData.password) {
-        setErrors({ general: "Invalid email or password" })
-        return
+    setIsLoading(true)
+    setErrors({})
+
+    try {
+      if (isLogin) {
+        // Login
+        const credentials = {
+          usernameOrEmail: formData.email, // Use email for login
+          password: formData.password
+        }
+        
+        const response = await apiService.login(credentials)
+        
+        // Store token and user data
+        localStorage.setItem("authToken", response.token)
+        localStorage.setItem("userData", JSON.stringify(response.user))
+        
+        onLogin(response.user)
+      } else {
+        // Registration
+        const registrationData = {
+          username: formData.username,
+          email: formData.email,
+          password: formData.password,
+          fullName: formData.fullName,
+          birthYear: parseInt(formData.birthYear),
+          bio: formData.bio
+        }
+        
+        const response = await apiService.register(registrationData)
+        
+        // Store token and user data
+        localStorage.setItem("authToken", response.token)
+        localStorage.setItem("userData", JSON.stringify(response.user))
+        
+        onLogin(response.user)
       }
-      
-      onLogin(user)
-    } else {
-      // Registration
-      const users = JSON.parse(localStorage.getItem("memorialUsers") || "{}")
-      
-      if (users[formData.email]) {
-        setErrors({ email: "An account with this email already exists" })
-        return
-      }
-      
-      const newUser = {
-        name: formData.name,
-        email: formData.email,
-        birthYear: formData.birthYear,
-        bio: formData.bio,
-        password: formData.password,
-        createdAt: new Date().toISOString(),
-        bookId: Date.now().toString() // Simple unique ID
-      }
-      
-      users[formData.email] = newUser
-      localStorage.setItem("memorialUsers", JSON.stringify(users))
-      
-      onLogin(newUser)
+    } catch (error) {
+      console.error("Auth error:", error)
+      setErrors({ general: error.message || "An error occurred. Please try again." })
+    } finally {
+      setIsLoading(false)
     }
   }
 
@@ -161,18 +178,34 @@ export default function AuthPage({ onLogin, mousePosition }) {
               <div className="error-message general-error">{errors.general}</div>
             )}
 
+            {!isLogin && (
+              <div className="form-group">
+                <label htmlFor="username" className="form-label">Username</label>
+                <input
+                  type="text"
+                  id="username"
+                  name="username"
+                  value={formData.username}
+                  onChange={handleInputChange}
+                  className={`form-input ${errors.username ? "error" : ""}`}
+                  placeholder="Choose a unique username"
+                />
+                {errors.username && <div className="error-message">{errors.username}</div>}
+              </div>
+            )}
+
             <div className="form-group">
-              <label htmlFor="name" className="form-label">Full Name</label>
+              <label htmlFor="fullName" className="form-label">Full Name</label>
               <input
                 type="text"
-                id="name"
-                name="name"
-                value={formData.name}
+                id="fullName"
+                name="fullName"
+                value={formData.fullName}
                 onChange={handleInputChange}
-                className={`form-input ${errors.name ? "error" : ""}`}
+                className={`form-input ${errors.fullName ? "error" : ""}`}
                 placeholder="Enter your full name"
               />
-              {errors.name && <div className="error-message">{errors.name}</div>}
+              {errors.fullName && <div className="error-message">{errors.fullName}</div>}
             </div>
 
             <div className="form-group">
@@ -237,8 +270,8 @@ export default function AuthPage({ onLogin, mousePosition }) {
               {errors.password && <div className="error-message">{errors.password}</div>}
             </div>
 
-            <button type="submit" className="auth-submit-btn vintage-button">
-              {isLogin ? "Enter Your Story" : "Create Your Book"}
+            <button type="submit" className="auth-submit-btn vintage-button" disabled={isLoading}>
+              {isLoading ? "Please wait..." : (isLogin ? "Enter Your Story" : "Create Your Book")}
             </button>
           </form>
         </div>

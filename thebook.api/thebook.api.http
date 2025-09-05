@@ -1,11 +1,5 @@
 @thebook.api_HostAddress = http://localhost:5031
 
-# Weather forecast (sample endpoint)
-GET {{thebook.api_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###
-
 # User Registration
 POST {{thebook.api_HostAddress}}/api/user/register
 Content-Type: application/json
@@ -43,27 +37,5 @@ Authorization: Bearer <your-jwt-token>
 # Get User by ID
 GET {{thebook.api_HostAddress}}/api/user/1
 Accept: application/json
-
-###
-
-# Get Book by ID (existing endpoint)
-GET {{thebook.api_HostAddress}}/api/books/{{$guid}}
-Accept: application/json
-
-###
-
-# Get Chapter Content (existing endpoint)
-GET {{thebook.api_HostAddress}}/api/chapters/1/content
-Accept: application/json
-
-###
-
-# Save Chapter Content (existing endpoint)
-POST {{thebook.api_HostAddress}}/api/chapters/1/content
-Content-Type: application/json
-
-{
-  "content": "This is the content of my first chapter..."
-}
 
 ###

@@ -1,0 +1,28 @@
+### Test User Registration
+POST http://localhost:5031/api/user/register
+Content-Type: application/json
+
+{
+  "username": "testuser",
+  "email": "test@example.com",
+  "password": "Password123!",
+  "fullName": "Test User",
+  "birthYear": 1990,
+  "bio": "A test user for the book application"
+}
+
+### Test User Login
+POST http://localhost:5031/api/user/login
+Content-Type: application/json
+
+{
+  "usernameOrEmail": "testuser",
+  "password": "Password123!"
+}
+
+### Test Get Profile (requires authentication)
+GET http://localhost:5031/api/user/profile
+Authorization: Bearer {{token}}
+
+### Test Get User by ID
+GET http://localhost:5031/api/user/1

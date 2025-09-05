@@ -18,9 +18,42 @@ const handleResponse = async (response) => {
 
 // API service object
 const apiService = {
+  // Auth endpoints
+  async register(userData) {
+    const response = await fetch(`${API_BASE_URL}/user/register`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(userData),
+    });
+    return handleResponse(response);
+  },
+
+  async login(credentials) {
+    const response = await fetch(`${API_BASE_URL}/user/login`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(credentials),
+    });
+    return handleResponse(response);
+  },
+
+  async getProfile(token) {
+    const response = await fetch(`${API_BASE_URL}/user/profile`, {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+    });
+    return handleResponse(response);
+  },
+
   // User-related endpoints
   async getUser(userId) {
-    const response = await fetch(`${API_BASE_URL}/users/${userId}`);
+    const response = await fetch(`${API_BASE_URL}/user/${userId}`);
     return handleResponse(response);
   },
 
@@ -55,12 +88,6 @@ const apiService = {
       },
       body: JSON.stringify({ content }),
     });
-    return handleResponse(response);
-  },
-
-  // Weather forecast (keeping for reference)
-  async getWeatherForecast() {
-    const response = await fetch(`${API_BASE_URL}/weatherforecast`);
     return handleResponse(response);
   },
 };

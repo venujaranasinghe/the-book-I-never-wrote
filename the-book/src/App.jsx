@@ -5,7 +5,6 @@ import "./App.css"
 import ProfilePage from "./ProfilePage"
 import AuthPage from "./AuthPage"
 import SharePage from "./SharePage"
-import ApiTest from "./components/ApiTest"
 
 const defaultChapters = [
   { id: 1, title: "The Prologue: A Letter to the Reader", subtitle: "The truth behind the silence, and the courage it took to break it", year: "childhood" },
@@ -63,14 +62,25 @@ function App() {
     // Check if user is already logged in
     const savedUser = localStorage.getItem("currentUser")
     if (savedUser) {
-      setCurrentUser(JSON.parse(savedUser))
+      const parsedUser = JSON.parse(savedUser)
+      // Normalize user object for compatibility
+      const normalizedUser = {
+        ...parsedUser,
+        name: parsedUser.fullName || parsedUser.name,
+      }
+      setCurrentUser(normalizedUser)
       setCurrentPage("home")
     }
   }, [])
 
   const handleLogin = (user) => {
-    setCurrentUser(user)
-    localStorage.setItem("currentUser", JSON.stringify(user))
+    // Normalize user object to ensure compatibility with existing code
+    const normalizedUser = {
+      ...user,
+      name: user.fullName || user.name, // Use fullName from API or fallback to name
+    }
+    setCurrentUser(normalizedUser)
+    localStorage.setItem("currentUser", JSON.stringify(normalizedUser))
     setCurrentPage("home")
   }
 
@@ -177,9 +187,6 @@ function App() {
       />
       <div className={`page-transition ${isTransitioning ? "active" : ""}`} />
       
-      {/* Temporary API Test Component - Remove this after testing */}
-      <ApiTest />
-      
       <TableOfContents
         chapters={defaultChapters}
         user={activeUser}
@@ -201,7 +208,7 @@ function App() {
 
 function TableOfContents({ chapters, user, isViewingAsGuest, onChapterClick, isTransitioning, onProfileClick, onLogout }) {
   const [typedText, setTypedText] = useState("")
-  const fullTitle = `${user.name.toUpperCase()}'S BOOK I NEVER WROTE`
+  const fullTitle = "THE BOOK I NEVER WROTE"
 
   useEffect(() => {
     let index = 0

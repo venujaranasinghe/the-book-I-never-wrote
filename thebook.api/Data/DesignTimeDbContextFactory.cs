@@ -10,10 +10,10 @@ namespace thebook.api
         {
             var optionsBuilder = new DbContextOptionsBuilder<BookDbContext>();
             
-            // Use a dummy connection string for design time
+            // Use the same connection string as in appsettings
             optionsBuilder.UseMySql(
-                "Server=localhost;Database=thebook;User=root;Password=dummypassword;",
-                ServerVersion.Parse("8.0.0-mysql")
+                "Server=localhost;Database=thebook;Uid=thebook_user;Pwd=thebook_password;AllowPublicKeyRetrieval=true;SslMode=none;",
+                ServerVersion.AutoDetect("Server=localhost;Database=thebook;Uid=thebook_user;Pwd=thebook_password;AllowPublicKeyRetrieval=true;SslMode=none;")
             );
 
             return new BookDbContext(optionsBuilder.Options);

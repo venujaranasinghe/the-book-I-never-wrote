@@ -21,11 +21,14 @@ namespace thebook.api.Data
                 entity.HasIndex(e => e.Username).IsUnique();
                 entity.HasIndex(e => e.Email).IsUnique();
                 
+                // Configure datetime properties for MySQL compatibility
                 entity.Property(e => e.CreatedAt)
-                    .HasDefaultValueSql("CURRENT_TIMESTAMP");
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("NOW()");
                 
                 entity.Property(e => e.UpdatedAt)
-                    .HasDefaultValueSql("CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP");
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("NOW() ON UPDATE NOW()");
             });
         }
     }
