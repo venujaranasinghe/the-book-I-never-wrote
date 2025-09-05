@@ -1,6 +1,51 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using thebook.api.Data;
+using thebook.api.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddControllers();
+
+// Add Entity Framework
+builder.Services.AddDbContext<BookDbContext>(options =>
+    options.UseMySql(
+        builder.Configuration.GetConnectionString("DefaultConnection"),
+        ServerVersion.AutoDetect(builder.Configuration.GetConnectionString("DefaultConnection"))
+    ));
+
+// Add authentication services
+builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IUserService, UserService>();
+
+// Add JWT Authentication
+var jwtSettings = builder.Configuration.GetSection("JwtSettings");
+var secretKey = jwtSettings["SecretKey"] ?? throw new InvalidOperationException("JWT SecretKey not configured");
+var key = Encoding.ASCII.GetBytes(secretKey);
+
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+.AddJwtBearer(options =>
+{
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuerSigningKey = true,
+        IssuerSigningKey = new SymmetricSecurityKey(key),
+        ValidateIssuer = true,
+        ValidIssuer = jwtSettings["Issuer"],
+        ValidateAudience = true,
+        ValidAudience = jwtSettings["Audience"],
+        ValidateLifetime = true,
+        ClockSkew = TimeSpan.Zero
+    };
+});
+
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
@@ -30,6 +75,13 @@ app.UseCors("AllowReactApp");
 
 app.UseHttpsRedirection();
 
+// Use Authentication and Authorization
+app.UseAuthentication();
+app.UseAuthorization();
+
+// Map controllers
+app.MapControllers();
+
 var summaries = new[]
 {
     "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
@@ -50,38 +102,7 @@ app.MapGet("/weatherforecast", () =>
 })
 .WithName("GetWeatherForecast");
 
-// Book-related endpoints
-app.MapGet("/api/users/{userId}", (string userId) =>
-{
-    // In a real app, this would query a database
-    return Results.Ok(new 
-    { 
-        id = userId,
-        name = "Sample User",
-        birthYear = 1990,
-        bio = "A sample user biography for testing purposes.",
-        bookId = Guid.NewGuid().ToString()
-    });
-})
-.WithName("GetUser");
-
-app.MapPost("/api/users", (UserCreateDto userDto) =>
-{
-    // In a real app, this would save to a database
-    var user = new 
-    { 
-        id = Guid.NewGuid().ToString(),
-        name = userDto.Name,
-        birthYear = userDto.BirthYear,
-        bio = userDto.Bio,
-        bookId = Guid.NewGuid().ToString(),
-        createdAt = DateTime.UtcNow
-    };
-    
-    return Results.Created($"/api/users/{user.id}", user);
-})
-.WithName("CreateUser");
-
+// Keep existing book-related endpoints for backward compatibility
 app.MapGet("/api/books/{bookId}", (string bookId) =>
 {
     // In a real app, this would query a database
