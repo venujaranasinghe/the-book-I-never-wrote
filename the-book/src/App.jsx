@@ -40,9 +40,10 @@ function App() {
     const newChapter = {
       id: defaultChapters.length + userChapters.length + 1,
       title: chapter.title,
-      subtitle: chapter.content.substring(0, 60) + (chapter.content.length > 60 ? "..." : ""),
-      year: "custom",
+      subtitle: chapter.subtitle,
+      year: chapter.year,
       content: chapter.content,
+      footnotes: chapter.footnotes || [],
     }
     const updatedChapters = [...userChapters, newChapter]
     setUserChapters(updatedChapters)
@@ -57,6 +58,35 @@ function App() {
       setCurrentPage("addChapter")
       setIsTransitioning(false)
     }, 800)
+  }
+
+  // Edit chapter handler
+  const handleEditChapter = (chapterId, updatedChapter) => {
+    const updatedChapters = userChapters.map(chapter => 
+      chapter.id === chapterId 
+        ? {
+            ...chapter,
+            title: updatedChapter.title,
+            subtitle: updatedChapter.subtitle,
+            year: updatedChapter.year,
+            content: updatedChapter.content,
+            footnotes: updatedChapter.footnotes || [],
+          }
+        : chapter
+    )
+    setUserChapters(updatedChapters)
+    const userKey = currentUser.bookId || currentUser.id
+    localStorage.setItem(`userChapters_${userKey}`, JSON.stringify(updatedChapters))
+  }
+
+  // Delete chapter handler
+  const handleDeleteChapter = (chapterId) => {
+    if (window.confirm("Are you sure you want to delete this chapter? This action cannot be undone.")) {
+      const updatedChapters = userChapters.filter(chapter => chapter.id !== chapterId)
+      setUserChapters(updatedChapters)
+      const userKey = currentUser.bookId || currentUser.id
+      localStorage.setItem(`userChapters_${userKey}`, JSON.stringify(updatedChapters))
+    }
   }
 
   // Combine default chapters with user chapters
@@ -239,6 +269,8 @@ function App() {
         isViewingAsGuest={isViewingAsGuest}
         onChapterClick={navigateToChapter}
         onAddChapterClick={navigateToAddChapter}
+        onEditChapter={handleEditChapter}
+        onDeleteChapter={handleDeleteChapter}
         isTransitioning={isTransitioning}
         onProfileClick={() => {
           setIsTransitioning(true)
@@ -303,8 +335,14 @@ function AddChapterPage({ onAddChapter, onBack, isTransitioning, mousePosition }
   )
 }
 
-function TableOfContents({ chapters, user, isViewingAsGuest, onChapterClick, onAddChapterClick, isTransitioning, onProfileClick, onLogout }) {
+function TableOfContents({ chapters, user, isViewingAsGuest, onChapterClick, onAddChapterClick, onEditChapter, onDeleteChapter, isTransitioning, onProfileClick, onLogout }) {
   const [typedText, setTypedText] = useState("")
+  const [editingChapter, setEditingChapter] = useState(null)
+  const [editTitle, setEditTitle] = useState("")
+  const [editSubtitle, setEditSubtitle] = useState("")
+  const [editYear, setEditYear] = useState("custom")
+  const [editContent, setEditContent] = useState("")
+  const [editFootnotes, setEditFootnotes] = useState("")
   const fullTitle = "THE BOOK I NEVER WROTE"
 
   useEffect(() => {
@@ -319,6 +357,41 @@ function TableOfContents({ chapters, user, isViewingAsGuest, onChapterClick, onA
     }, 100)
     return () => clearInterval(timer)
   }, [fullTitle])
+
+  const startEditing = (chapter) => {
+    setEditingChapter(chapter.id)
+    setEditTitle(chapter.title)
+    setEditSubtitle(chapter.subtitle)
+    setEditYear(chapter.year)
+    setEditContent(chapter.content)
+    setEditFootnotes(Array.isArray(chapter.footnotes) ? chapter.footnotes.join('\n') : '')
+  }
+
+  const saveEdit = () => {
+    const footnotesArray = editFootnotes.split('\n').filter(note => note.trim())
+    onEditChapter(editingChapter, { 
+      title: editTitle, 
+      subtitle: editSubtitle,
+      year: editYear,
+      content: editContent,
+      footnotes: footnotesArray
+    })
+    setEditingChapter(null)
+    setEditTitle("")
+    setEditSubtitle("")
+    setEditYear("custom")
+    setEditContent("")
+    setEditFootnotes("")
+  }
+
+  const cancelEdit = () => {
+    setEditingChapter(null)
+    setEditTitle("")
+    setEditSubtitle("")
+    setEditYear("custom")
+    setEditContent("")
+    setEditFootnotes("")
+  }
 
   return (
     <div className={`container vintage-paper ${isTransitioning ? "transitioning" : ""}`}>
@@ -380,32 +453,110 @@ function TableOfContents({ chapters, user, isViewingAsGuest, onChapterClick, onA
 
           <div className="chapters-list">
             {chapters.map((chapter, index) => (
-              <div
-                key={chapter.id}
-                className="chapter-item vintage-entry"
-                onClick={() => onChapterClick(chapter)}
-                style={{ animationDelay: `${index * 0.1}s` }}
-              >
-                <div className="chapter-number-section">
-                  <span className="chapter-roman">{toRoman(index + 1)}</span>
-                  <div className="chapter-year">{chapter.year}</div>
-                </div>
-
-                <div className="chapter-content">
-                  <h3 className="chapter-title">{chapter.title}</h3>
-                  <p className="chapter-subtitle">{chapter.subtitle}</p>
-                  <div className="chapter-dots">
-                    {Array.from({ length: 30 }, (_, i) => (
-                      <span key={i} className="dot">
-                        .
-                      </span>
-                    ))}
+              <div key={chapter.id} className={`chapter-item vintage-entry ${editingChapter === chapter.id ? 'editing' : ''}`} style={{ animationDelay: `${index * 0.1}s` }}>
+                {editingChapter === chapter.id ? (
+                  // Edit mode
+                  <div className="chapter-edit-form">
+                    <input
+                      type="text"
+                      value={editTitle}
+                      onChange={(e) => setEditTitle(e.target.value)}
+                      className="nostalgic-input chapter-edit-title"
+                      placeholder="Chapter Title"
+                    />
+                    <input
+                      type="text"
+                      value={editSubtitle}
+                      onChange={(e) => setEditSubtitle(e.target.value)}
+                      className="nostalgic-input chapter-edit-subtitle"
+                      placeholder="Chapter Subtitle (optional)"
+                    />
+                    <select
+                      value={editYear}
+                      onChange={(e) => setEditYear(e.target.value)}
+                      className="nostalgic-select chapter-edit-year"
+                    >
+                      <option value="childhood">Childhood</option>
+                      <option value="youth">Youth</option>
+                      <option value="adulthood">Adulthood</option>
+                      <option value="present">Present</option>
+                      <option value="future">Future</option>
+                      <option value="custom">Custom</option>
+                    </select>
+                    <textarea
+                      value={editContent}
+                      onChange={(e) => setEditContent(e.target.value)}
+                      className="nostalgic-textarea chapter-edit-content"
+                      placeholder="Chapter Content"
+                    />
+                    <textarea
+                      value={editFootnotes}
+                      onChange={(e) => setEditFootnotes(e.target.value)}
+                      className="nostalgic-textarea chapter-edit-footnotes"
+                      placeholder="Footnotes (one per line, optional)"
+                    />
+                    <div className="chapter-edit-buttons">
+                      <button onClick={saveEdit} className="nostalgic-button save-btn">
+                        ✓ Save
+                      </button>
+                      <button onClick={cancelEdit} className="nostalgic-button cancel-btn">
+                        ✕ Cancel
+                      </button>
+                    </div>
                   </div>
-                </div>
+                ) : (
+                  // View mode
+                  <>
+                    <div className="chapter-main-content" onClick={() => onChapterClick(chapter)}>
+                      <div className="chapter-number-section">
+                        <span className="chapter-roman">{toRoman(index + 1)}</span>
+                        <div className="chapter-year">{chapter.year}</div>
+                      </div>
 
-                <div className="page-ref">
-                  <span className="page-number">{String((index + 1) * 12).padStart(3, "0")}</span>
-                </div>
+                      <div className="chapter-content">
+                        <h3 className="chapter-title">{chapter.title}</h3>
+                        <p className="chapter-subtitle">{chapter.subtitle}</p>
+                        <div className="chapter-dots">
+                          {Array.from({ length: 30 }, (_, i) => (
+                            <span key={i} className="dot">
+                              .
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+
+                      <div className="page-ref">
+                        <span className="page-number">{String((index + 1) * 12).padStart(3, "0")}</span>
+                      </div>
+                    </div>
+                    
+                    {/* Show edit/delete buttons only for custom chapters and only for the owner */}
+                    {chapter.year === "custom" && !isViewingAsGuest && (
+                      <div className="chapter-actions">
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation()
+                            startEditing(chapter)
+                          }}
+                          className="chapter-action-btn edit-btn"
+                          title="Edit Chapter"
+                        >
+                          ✎
+                        </button>
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation()
+                            onDeleteChapter(chapter.id)
+                          }}
+                          className="chapter-action-btn delete-btn"
+                          title="Delete Chapter"
+                        >
+                          🗑
+                        </button>
+                      </div>
+                    )}
+                  </>
+                )}
               </div>
             ))}
           </div>
@@ -453,7 +604,7 @@ function ChapterPage({ chapter, user, userChapters, onBack, isTransitioning, mou
     if (customChapter) {
       return {
         content: customChapter.content,
-        footnotes: []
+        footnotes: customChapter.footnotes || []
       }
     }
 
@@ -465,8 +616,6 @@ function ChapterPage({ chapter, user, userChapters, onBack, isTransitioning, mou
 This is the book I never planned to write.
 
 My name is ${user.name}, and I was born in ${user.birthYear}. This memoir began as scattered thoughts, memories that refused to stay quiet, and moments that shaped who I am today.
-
-${user.bio}
 
 I once believed some stories were better left untold — especially mine. But I've learned that every life has chapters worth sharing, lessons worth passing on, and moments that deserve to be remembered.
 
@@ -487,8 +636,6 @@ ${user.name}`,
 
 Born in ${user.birthYear}, I entered this world as ${user.name}. But names carry weight, expectations, and the dreams of those who give them to us.
 
-${user.bio}
-
 In those early years, I was like soft clay, molded by every experience, every word, every moment of wonder and confusion. The world seemed enormous then, filled with possibilities I couldn't yet name but somehow felt in my bones.
 
 Looking back now, I can see how those formative moments were already writing the first chapters of who I would become. Every childhood fear, every small victory, every question that kept me awake at night — they were all leading me toward this moment, where I finally found the courage to tell my story.
@@ -502,8 +649,6 @@ Before I was anyone else, I was simply me. And sometimes, that simple truth is t
       content: `This chapter of ${user.name}'s story is still being written...
 
 Born in ${user.birthYear}, ${user.name}'s journey continues to unfold. Each day brings new experiences, new insights, and new stories to tell.
-
-${user.bio}
 
 The beauty of an unfinished story is that it holds infinite potential. What will happen next? What dreams will be pursued? What challenges will be overcome?
 

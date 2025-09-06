@@ -13,7 +13,7 @@
   font-family: 'Special Elite', 'Courier New', Courier, monospace;
   margin-bottom: 1rem;
 }
-.nostalgic-input, .nostalgic-textarea {
+.nostalgic-input, .nostalgic-textarea, .nostalgic-select {
   width: 100%;
   margin-bottom: 1rem;
   padding: 0.75rem;
@@ -23,10 +23,28 @@
   font-family: 'Special Elite', 'Courier New', Courier, monospace;
   font-size: 1rem;
   color: #7c5e3c;
+  box-sizing: border-box;
+}
+.nostalgic-select {
+  cursor: pointer;
+}
+.nostalgic-select:focus {
+  outline: none;
+  border-color: #7c5e3c;
+  box-shadow: 0 0 0 2px rgba(124, 94, 60, 0.2);
 }
 .nostalgic-textarea {
   min-height: 200px;
   resize: vertical;
+}
+.footnotes-textarea {
+  min-height: 120px;
+  font-size: 0.9rem;
+  background: #faf8f3;
+}
+.footnotes-textarea::placeholder {
+  font-style: italic;
+  color: #a08c5b;
 }
 .nostalgic-button {
   background: #bfa77a;
@@ -59,6 +77,169 @@
   background: #bfa77a;
   color: #fff;
 }
+
+/* Chapter Actions - Override main styles */
+.chapter-item {
+  position: relative !important;
+  padding: 35px 30px !important;
+  margin-bottom: 1.5rem !important;
+  min-height: auto !important;
+  display: grid !important;
+  grid-template-columns: 120px 1fr 80px !important;
+  gap: 40px !important;
+  align-items: center !important;
+}
+
+/* Override grid layout when editing */
+.chapter-item.editing {
+  display: block !important;
+  grid-template-columns: none !important;
+  gap: 0 !important;
+  padding: 20px !important;
+}
+
+.chapter-main-content {
+  display: contents !important;
+  cursor: pointer;
+}
+.chapter-content {
+  /* Inherits grid position 2 */
+  padding: 0 !important;
+}
+.chapter-title {
+  margin-bottom: 0.5rem !important;
+  font-size: 1.1rem !important;
+}
+.chapter-subtitle {
+  margin-bottom: 0.5rem !important;
+  line-height: 1.4 !important;
+}
+.chapter-dots {
+  margin: 0.5rem 0 !important;
+}
+.page-ref {
+  /* Inherits grid position 3 */
+  text-align: right;
+}
+.chapter-actions {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  display: flex;
+  gap: 0.5rem;
+  opacity: 0;
+  transition: opacity 0.2s;
+  z-index: 10;
+}
+.chapter-item:hover .chapter-actions {
+  opacity: 1;
+}
+.chapter-action-btn {
+  background: #f4ecd8;
+  border: 1px solid #bfa77a;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  color: #7c5e3c;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+.edit-btn:hover {
+  background: #bfa77a;
+  color: #fff;
+  transform: scale(1.1);
+}
+.delete-btn:hover {
+  background: #d32f2f;
+  color: #fff;
+  border-color: #d32f2f;
+  transform: scale(1.1);
+}
+
+/* Chapter Edit Form */
+.chapter-edit-form {
+  width: 100%;
+  padding: 2rem;
+  background: #f9f6f1;
+  border-radius: 12px;
+  border: 2px solid #bfa77a;
+  margin: 1rem 0;
+  box-shadow: 0 4px 12px rgba(191, 167, 122, 0.15);
+  grid-column: 1 / -1 !important; /* Span all grid columns */
+  display: block !important; /* Override any grid/contents display */
+}
+.chapter-edit-title {
+  margin-bottom: 1rem;
+  font-size: 1.2rem;
+  font-weight: bold;
+  padding: 0.75rem;
+  width: 100%;
+  box-sizing: border-box;
+  display: block !important;
+}
+.chapter-edit-subtitle {
+  margin-bottom: 1rem;
+  font-size: 1rem;
+  font-style: italic;
+  padding: 0.75rem;
+  width: 100%;
+  box-sizing: border-box;
+  display: block !important;
+}
+.chapter-edit-year {
+  margin-bottom: 1rem;
+  padding: 0.75rem;
+  width: 100%;
+  box-sizing: border-box;
+  display: block !important;
+}
+.chapter-edit-content {
+  margin-bottom: 1rem;
+  min-height: 120px;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0.75rem;
+  line-height: 1.6;
+  display: block !important;
+}
+.chapter-edit-footnotes {
+  margin-bottom: 1.5rem;
+  min-height: 80px;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0.75rem;
+  line-height: 1.6;
+  display: block !important;
+  font-size: 0.9rem;
+  background: #faf8f3;
+}
+.chapter-edit-buttons {
+  display: flex !important;
+  gap: 1rem;
+  justify-content: flex-end;
+}
+.save-btn {
+  background: #4caf50;
+  border-color: #4caf50;
+  padding: 0.75rem 1.5rem;
+}
+.save-btn:hover {
+  background: #45a049;
+}
+.cancel-btn {
+  background: #757575;
+  border-color: #757575;
+  padding: 0.75rem 1.5rem;
+}
+.cancel-btn:hover {
+  background: #616161;
+}
+
 .nostalgic-chapter-list {
   max-width: 600px;
   margin: 2rem auto;
