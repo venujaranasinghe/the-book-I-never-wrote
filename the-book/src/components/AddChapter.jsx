@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './AddChapter.css';
+import RichTextEditor from './RichTextEditor';
 
 const AddChapter = ({ onAddChapter }) => {
   const [title, setTitle] = useState('');
@@ -11,10 +12,11 @@ const AddChapter = ({ onAddChapter }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (title.trim() && content.trim()) {
-      const footnotesArray = footnotes.split('\n').filter(note => note.trim());
+      // For footnotes, if it's HTML from rich editor, keep as is, otherwise split by lines
+      const footnotesArray = footnotes.includes('<') ? [footnotes] : footnotes.split('\n').filter(note => note.trim());
       onAddChapter({ 
         title, 
-        subtitle: subtitle || content.substring(0, 60) + (content.length > 60 ? "..." : ""),
+        subtitle: subtitle || content.replace(/<[^>]*>/g, '').substring(0, 60) + (content.length > 60 ? "..." : ""),
         year,
         content,
         footnotes: footnotesArray
@@ -69,19 +71,18 @@ const AddChapter = ({ onAddChapter }) => {
           ))}
         </select>
         
-        <textarea
-          placeholder="Chapter Content"
+        <RichTextEditor
           value={content}
           onChange={(e) => setContent(e.target.value)}
-          className="nostalgic-textarea"
-          required
+          placeholder="Chapter Content - Use the formatting tools to make your story come alive!"
+          className="nostalgic-rich-editor"
         />
 
-        <textarea
-          placeholder="Footnotes (one per line, optional)"
+        <RichTextEditor
           value={footnotes}
           onChange={(e) => setFootnotes(e.target.value)}
-          className="nostalgic-textarea footnotes-textarea"
+          placeholder="Footnotes (optional) - Add additional context, references, or side notes"
+          className="nostalgic-rich-editor footnotes-editor"
         />
         
         <button type="submit" className="nostalgic-button">Add Chapter</button>

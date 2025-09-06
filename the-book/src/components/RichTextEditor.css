@@ -1,0 +1,213 @@
+/* Rich Text Editor Styles */
+.rich-text-editor {
+  width: 100%;
+  margin-bottom: 1rem;
+  border: 1.5px solid #bfa77a;
+  border-radius: 8px;
+  background: #f9f6f1;
+  font-family: 'Special Elite', 'Courier New', Courier, monospace;
+  overflow: hidden;
+}
+
+.formatting-toolbar {
+  background: #f4ecd8;
+  border-bottom: 1px solid #bfa77a;
+  padding: 0.5rem;
+}
+
+.format-toggle-btn {
+  background: #bfa77a;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 0.5rem 1rem;
+  font-family: 'Special Elite', 'Courier New', Courier, monospace;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.format-toggle-btn:hover {
+  background: #7c5e3c;
+}
+
+.formatting-controls {
+  margin-top: 0.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.format-group {
+  display: flex;
+  gap: 0.25rem;
+  padding: 0.25rem;
+  background: #fff;
+  border-radius: 4px;
+  border: 1px solid #e2cfa5;
+}
+
+.format-group button {
+  background: transparent;
+  border: none;
+  padding: 0.25rem 0.5rem;
+  border-radius: 3px;
+  cursor: pointer;
+  font-family: 'Special Elite', 'Courier New', Courier, monospace;
+  font-size: 0.8rem;
+  color: #7c5e3c;
+  transition: background 0.2s;
+}
+
+.format-group button:hover {
+  background: #f4ecd8;
+}
+
+.format-group button:active {
+  background: #e2cfa5;
+}
+
+.special-formats {
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 0.5rem;
+}
+
+.format-label {
+  font-size: 0.8rem;
+  color: #7c5e3c;
+  font-weight: bold;
+  margin-bottom: 0.25rem;
+}
+
+.special-formats button {
+  margin-bottom: 0.25rem;
+  width: 100%;
+  text-align: left;
+}
+
+.rich-text-content {
+  min-height: 200px;
+  padding: 1rem;
+  font-size: 1rem;
+  color: #7c5e3c;
+  line-height: 1.6;
+  outline: none;
+  background: #f9f6f1;
+}
+
+.rich-text-content:empty:before {
+  content: attr(data-placeholder);
+  color: #a08c5b;
+  font-style: italic;
+}
+
+/* Special Text Format Styles */
+.letter-format {
+  background: #faf8f3;
+  border-left: 4px solid #bfa77a;
+  padding: 1rem;
+  margin: 1rem 0;
+  border-radius: 0 8px 8px 0;
+  font-style: italic;
+}
+
+.diary-format {
+  background: #f9f6f1;
+  border: 1px dashed #bfa77a;
+  padding: 1rem;
+  margin: 1rem 0;
+  border-radius: 8px;
+}
+
+.diary-date {
+  color: #7c5e3c;
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+  text-align: right;
+}
+
+.diary-entry {
+  font-style: italic;
+  line-height: 1.7;
+}
+
+.memorable-quote {
+  background: #f4ecd8;
+  border-left: 6px solid #bfa77a;
+  padding: 1rem 1.5rem;
+  margin: 1.5rem 0;
+  font-size: 1.1rem;
+  font-style: italic;
+  position: relative;
+  border-radius: 0 8px 8px 0;
+}
+
+.memorable-quote:before {
+  content: '"';
+  font-size: 3rem;
+  color: #bfa77a;
+  position: absolute;
+  top: -0.5rem;
+  left: 0.5rem;
+  line-height: 1;
+}
+
+.poem-format {
+  background: #faf8f3;
+  padding: 1.5rem;
+  margin: 1rem 0;
+  border-radius: 8px;
+  border: 1px solid #e2cfa5;
+  text-align: center;
+}
+
+.poem-line {
+  margin: 0.5rem 0;
+  font-style: italic;
+  line-height: 1.8;
+}
+
+.recipe-format {
+  background: #fff;
+  border: 2px solid #bfa77a;
+  padding: 1.5rem;
+  margin: 1rem 0;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(191, 167, 122, 0.15);
+}
+
+.recipe-format h4 {
+  color: #7c5e3c;
+  border-bottom: 1px solid #e2cfa5;
+  padding-bottom: 0.5rem;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.recipe-format ul, .recipe-format ol {
+  margin: 0.5rem 0;
+  padding-left: 1.5rem;
+}
+
+.recipe-format li {
+  margin: 0.25rem 0;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .formatting-controls {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .format-group {
+    justify-content: center;
+  }
+  
+  .special-formats {
+    align-items: center;
+    text-align: center;
+  }
+}

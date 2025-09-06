@@ -46,6 +46,65 @@
   font-style: italic;
   color: #a08c5b;
 }
+
+/* Rich Text Editor Integration */
+.nostalgic-rich-editor {
+  margin-bottom: 1rem;
+}
+
+.footnotes-editor {
+  opacity: 0.9;
+}
+
+.footnotes-editor .rich-text-content {
+  min-height: 120px;
+  background: #faf8f3;
+}
+
+/* Chapter editing rich text styles */
+.chapter-edit-content-rich,
+.chapter-edit-footnotes-rich {
+  margin-bottom: 1rem;
+}
+
+.chapter-edit-content-rich .rich-text-content {
+  min-height: 150px;
+}
+
+.chapter-edit-footnotes-rich .rich-text-content {
+  min-height: 80px;
+  background: #faf8f3;
+}
+
+/* Rich chapter content display */
+.rich-chapter-content {
+  animation: slideInUp 0.6s ease-out both;
+}
+
+.rich-chapter-content p {
+  margin-bottom: 1rem;
+  line-height: 1.7;
+}
+
+.rich-chapter-content .letter-format,
+.rich-chapter-content .diary-format,
+.rich-chapter-content .memorable-quote,
+.rich-chapter-content .poem-format,
+.rich-chapter-content .recipe-format {
+  margin: 1.5rem 0;
+  animation: fadeIn 0.8s ease-out both;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
 .nostalgic-button {
   background: #bfa77a;
   color: #fff;

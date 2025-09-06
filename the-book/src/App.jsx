@@ -6,6 +6,7 @@ import ProfilePage from "./ProfilePage"
 import AuthPage from "./AuthPage"
 import SharePage from "./SharePage"
 import AddChapter from "./components/AddChapter"
+import RichTextEditor from "./components/RichTextEditor"
 
 const defaultChapters = [
   { id: 1, title: "The Prologue: A Letter to the Reader", subtitle: "The truth behind the silence, and the courage it took to break it", year: "childhood" },
@@ -364,11 +365,12 @@ function TableOfContents({ chapters, user, isViewingAsGuest, onChapterClick, onA
     setEditSubtitle(chapter.subtitle)
     setEditYear(chapter.year)
     setEditContent(chapter.content)
-    setEditFootnotes(Array.isArray(chapter.footnotes) ? chapter.footnotes.join('\n') : '')
+    setEditFootnotes(Array.isArray(chapter.footnotes) ? chapter.footnotes.join('\n') : (chapter.footnotes || ''))
   }
 
   const saveEdit = () => {
-    const footnotesArray = editFootnotes.split('\n').filter(note => note.trim())
+    // Handle rich text content for footnotes
+    const footnotesArray = editFootnotes.includes('<') ? [editFootnotes] : editFootnotes.split('\n').filter(note => note.trim())
     onEditChapter(editingChapter, { 
       title: editTitle, 
       subtitle: editSubtitle,
@@ -483,17 +485,17 @@ function TableOfContents({ chapters, user, isViewingAsGuest, onChapterClick, onA
                       <option value="future">Future</option>
                       <option value="custom">Custom</option>
                     </select>
-                    <textarea
+                    <RichTextEditor
                       value={editContent}
                       onChange={(e) => setEditContent(e.target.value)}
-                      className="nostalgic-textarea chapter-edit-content"
                       placeholder="Chapter Content"
+                      className="chapter-edit-content-rich"
                     />
-                    <textarea
+                    <RichTextEditor
                       value={editFootnotes}
                       onChange={(e) => setEditFootnotes(e.target.value)}
-                      className="nostalgic-textarea chapter-edit-footnotes"
-                      placeholder="Footnotes (one per line, optional)"
+                      placeholder="Footnotes (optional)"
+                      className="chapter-edit-footnotes-rich"
                     />
                     <div className="chapter-edit-buttons">
                       <button onClick={saveEdit} className="nostalgic-button save-btn">
@@ -699,11 +701,21 @@ Only time will tell, but one thing is certain: this story is far from over.`,
         </div>
 
         <div className="chapter-text">
-          {content.content.split("\n\n").map((paragraph, index) => (
-            <p key={index} className="paragraph vintage-paragraph" style={{ animationDelay: `${index * 0.2}s` }}>
-              {paragraph}
-            </p>
-          ))}
+          {content.content.includes('<') ? (
+            // Rich text content
+            <div 
+              className="rich-chapter-content" 
+              dangerouslySetInnerHTML={{ __html: content.content }}
+              style={{ animationDelay: '0.2s' }}
+            />
+          ) : (
+            // Plain text content
+            content.content.split("\n\n").map((paragraph, index) => (
+              <p key={index} className="paragraph vintage-paragraph" style={{ animationDelay: `${index * 0.2}s` }}>
+                {paragraph}
+              </p>
+            ))
+          )}
         </div>
 
         {content.footnotes.length > 0 && (
@@ -714,9 +726,13 @@ Only time will tell, but one thing is certain: this story is far from over.`,
               <div className="footnote-line" />
             </div>
             {content.footnotes.map((footnote, index) => (
-              <p key={index} className="footnote vintage-footnote">
-                {footnote}
-              </p>
+              <div key={index} className="footnote vintage-footnote">
+                {footnote.includes('<') ? (
+                  <div dangerouslySetInnerHTML={{ __html: footnote }} />
+                ) : (
+                  <p>{footnote}</p>
+                )}
+              </div>
             ))}
           </div>
         )}
@@ -726,8 +742,21 @@ Only time will tell, but one thing is certain: this story is far from over.`,
 }
 
 function toRoman(num) {
-  const romanNumerals = ["I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X", "XI", "XII"]
-  return romanNumerals[num - 1] || num.toString()
+  if (num <= 0) return num.toString()
+  
+  const values = [1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1]
+  const symbols = ["M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I"]
+  
+  let result = ""
+  
+  for (let i = 0; i < values.length; i++) {
+    while (num >= values[i]) {
+      result += symbols[i]
+      num -= values[i]
+    }
+  }
+  
+  return result
 }
 
 export default App
