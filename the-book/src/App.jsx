@@ -5,6 +5,7 @@ import "./App.css"
 import ProfilePage from "./ProfilePage"
 import AuthPage from "./AuthPage"
 import SharePage from "./SharePage"
+import AddChapter from "./components/AddChapter"
 
 const defaultChapters = [
   { id: 1, title: "The Prologue: A Letter to the Reader", subtitle: "The truth behind the silence, and the courage it took to break it", year: "childhood" },
@@ -33,6 +34,33 @@ function App() {
   const [currentChapter, setCurrentChapter] = useState(null)
   const [isTransitioning, setIsTransitioning] = useState(false)
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
+  const [userChapters, setUserChapters] = useState([])
+  // Add chapter handler
+  const handleAddChapter = (chapter) => {
+    const newChapter = {
+      id: defaultChapters.length + userChapters.length + 1,
+      title: chapter.title,
+      subtitle: chapter.content.substring(0, 60) + (chapter.content.length > 60 ? "..." : ""),
+      year: "custom",
+      content: chapter.content,
+    }
+    const updatedChapters = [...userChapters, newChapter]
+    setUserChapters(updatedChapters)
+    // Save to localStorage with user-specific key
+    const userKey = currentUser.bookId || currentUser.id
+    localStorage.setItem(`userChapters_${userKey}`, JSON.stringify(updatedChapters))
+  }
+
+  const navigateToAddChapter = () => {
+    setIsTransitioning(true)
+    setTimeout(() => {
+      setCurrentPage("addChapter")
+      setIsTransitioning(false)
+    }, 800)
+  }
+
+  // Combine default chapters with user chapters
+  const allChapters = [...defaultChapters, ...userChapters]
 
   useEffect(() => {
     const handleMouseMove = (e) => {
@@ -54,6 +82,9 @@ function App() {
       
       if (guestUserData) {
         setGuestUser(guestUserData)
+        // Load guest user's chapters
+        const guestChapters = JSON.parse(localStorage.getItem(`userChapters_${userBookId}`) || "[]")
+        setUserChapters(guestChapters)
         setCurrentPage("home")
         return
       }
@@ -69,6 +100,9 @@ function App() {
         name: parsedUser.fullName || parsedUser.name,
       }
       setCurrentUser(normalizedUser)
+      // Load user's chapters
+      const savedChapters = JSON.parse(localStorage.getItem(`userChapters_${normalizedUser.bookId || normalizedUser.id}`) || "[]")
+      setUserChapters(savedChapters)
       setCurrentPage("home")
     }
   }, [])
@@ -139,11 +173,23 @@ function App() {
     )
   }
 
+  if (currentPage === "addChapter") {
+    return (
+      <AddChapterPage
+        onAddChapter={handleAddChapter}
+        onBack={navigateHome}
+        isTransitioning={isTransitioning}
+        mousePosition={mousePosition}
+      />
+    )
+  }
+
   if (currentPage === "chapter" && currentChapter) {
     return (
       <ChapterPage
         chapter={currentChapter}
         user={activeUser}
+        userChapters={userChapters}
         onBack={navigateHome}
         isTransitioning={isTransitioning}
         mousePosition={mousePosition}
@@ -188,10 +234,11 @@ function App() {
       <div className={`page-transition ${isTransitioning ? "active" : ""}`} />
       
       <TableOfContents
-        chapters={defaultChapters}
+        chapters={allChapters}
         user={activeUser}
         isViewingAsGuest={isViewingAsGuest}
         onChapterClick={navigateToChapter}
+        onAddChapterClick={navigateToAddChapter}
         isTransitioning={isTransitioning}
         onProfileClick={() => {
           setIsTransitioning(true)
@@ -206,7 +253,57 @@ function App() {
   )
 }
 
-function TableOfContents({ chapters, user, isViewingAsGuest, onChapterClick, isTransitioning, onProfileClick, onLogout }) {
+// Add Chapter Page
+function AddChapterPage({ onAddChapter, onBack, isTransitioning, mousePosition }) {
+  return (
+    <div className={`container vintage-paper ${isTransitioning ? "transitioning" : ""}`}>
+      <div className="paper-texture" />
+      <div className="vintage-border" />
+      
+      <div
+        className="cursor-glow"
+        style={{
+          left: mousePosition.x - 10,
+          top: mousePosition.y - 10,
+        }}
+      />
+
+      <header className="header">
+        <div className="header-ornament">❦</div>
+        <div className="header-meta">
+          <span className="section">ADD NEW CHAPTER</span>
+        </div>
+        <button className="back-button vintage-button" onClick={onBack}>
+          ← RETURN TO CONTENTS
+        </button>
+      </header>
+
+      <main className="main-content">
+        <div className="title-section">
+          <div className="vintage-frame">
+            <h1 className="main-title">
+              Add Your Chapter
+            </h1>
+            <div className="title-underline" />
+          </div>
+
+          <div className="vintage-ornament">
+            <div className="ornament-line" />
+            <div className="ornament-center">✦</div>
+            <div className="ornament-line" />
+          </div>
+        </div>
+
+        <AddChapter onAddChapter={(chapter) => {
+          onAddChapter(chapter)
+          onBack()
+        }} />
+      </main>
+    </div>
+  )
+}
+
+function TableOfContents({ chapters, user, isViewingAsGuest, onChapterClick, onAddChapterClick, isTransitioning, onProfileClick, onLogout }) {
   const [typedText, setTypedText] = useState("")
   const fullTitle = "THE BOOK I NEVER WROTE"
 
@@ -274,6 +371,11 @@ function TableOfContents({ chapters, user, isViewingAsGuest, onChapterClick, isT
           <div className="chapters-header">
             <h2 className="chapters-title">TABLE OF CONTENTS</h2>
             <div className="chapters-ornament">◆ ◇ ◆</div>
+            {!isViewingAsGuest && (
+              <button className="add-chapter-button vintage-button" onClick={onAddChapterClick}>
+                ✎ Add Chapter
+              </button>
+            )}
           </div>
 
           <div className="chapters-list">
@@ -330,7 +432,7 @@ function TableOfContents({ chapters, user, isViewingAsGuest, onChapterClick, isT
   )
 }
 
-function ChapterPage({ chapter, user, onBack, isTransitioning, mousePosition }) {
+function ChapterPage({ chapter, user, userChapters, onBack, isTransitioning, mousePosition }) {
   const [scrollProgress, setScrollProgress] = useState(0)
 
   useEffect(() => {
@@ -346,7 +448,16 @@ function ChapterPage({ chapter, user, onBack, isTransitioning, mousePosition }) 
   }, [])
 
   const getChapterContent = (chapterId, user) => {
-    // Generate personalized content based on user data and chapter
+    // Check if it's a custom chapter
+    const customChapter = userChapters.find(ch => ch.id === chapterId)
+    if (customChapter) {
+      return {
+        content: customChapter.content,
+        footnotes: []
+      }
+    }
+
+    // Generate personalized content based on user data and chapter for default chapters
     const contents = {
       1: {
         content: `Dear Reader,

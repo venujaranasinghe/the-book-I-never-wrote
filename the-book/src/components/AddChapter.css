@@ -1,0 +1,86 @@
+.nostalgic-chapter-form {
+  background: #f4ecd8;
+  border: 2px solid #bfa77a;
+  border-radius: 12px;
+  padding: 2rem;
+  max-width: 600px;
+  margin: 2rem auto;
+  box-shadow: 0 4px 24px rgba(191, 167, 122, 0.15);
+  font-family: 'Special Elite', 'Courier New', Courier, monospace;
+}
+.nostalgic-chapter-form h2 {
+  color: #7c5e3c;
+  font-family: 'Special Elite', 'Courier New', Courier, monospace;
+  margin-bottom: 1rem;
+}
+.nostalgic-input, .nostalgic-textarea {
+  width: 100%;
+  margin-bottom: 1rem;
+  padding: 0.75rem;
+  border: 1.5px solid #bfa77a;
+  border-radius: 8px;
+  background: #f9f6f1;
+  font-family: 'Special Elite', 'Courier New', Courier, monospace;
+  font-size: 1rem;
+  color: #7c5e3c;
+}
+.nostalgic-textarea {
+  min-height: 200px;
+  resize: vertical;
+}
+.nostalgic-button {
+  background: #bfa77a;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 0.75rem 1.5rem;
+  font-family: 'Special Elite', 'Courier New', Courier, monospace;
+  font-size: 1rem;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(191, 167, 122, 0.12);
+  transition: background 0.2s;
+}
+.nostalgic-button:hover {
+  background: #7c5e3c;
+}
+.add-chapter-button {
+  background: #7c5e3c;
+  color: #f4ecd8;
+  border: 1px solid #bfa77a;
+  border-radius: 6px;
+  padding: 0.5rem 1rem;
+  font-family: 'Special Elite', 'Courier New', Courier, monospace;
+  font-size: 0.9rem;
+  cursor: pointer;
+  margin-left: 1rem;
+  transition: all 0.2s;
+}
+.add-chapter-button:hover {
+  background: #bfa77a;
+  color: #fff;
+}
+.nostalgic-chapter-list {
+  max-width: 600px;
+  margin: 2rem auto;
+  font-family: 'Special Elite', 'Courier New', Courier, monospace;
+}
+.nostalgic-chapter {
+  background: #f9f6f1;
+  border-left: 6px solid #bfa77a;
+  margin-bottom: 1.5rem;
+  padding: 1rem 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(191, 167, 122, 0.08);
+}
+.nostalgic-chapter-title {
+  color: #7c5e3c;
+  font-size: 1.25rem;
+  margin-bottom: 0.5rem;
+  font-family: 'Special Elite', 'Courier New', Courier, monospace;
+}
+.nostalgic-chapter-content {
+  color: #4e3a1e;
+  font-size: 1rem;
+  white-space: pre-wrap;
+  font-family: 'Special Elite', 'Courier New', Courier, monospace;
+}
