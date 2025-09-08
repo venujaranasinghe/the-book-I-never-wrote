@@ -20,6 +20,7 @@ builder.Services.AddDbContext<BookDbContext>(options =>
 // Add authentication services
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IChapterService, ChapterService>();
 
 // Add JWT Authentication
 var jwtSettings = builder.Configuration.GetSection("JwtSettings");

@@ -35,5 +35,8 @@ namespace thebook.api.Models
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
 
         public bool IsActive { get; set; } = true;
+
+        // Navigation property
+        public ICollection<Chapter> Chapters { get; set; } = new List<Chapter>();
     }
 }
