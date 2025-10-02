@@ -7,6 +7,7 @@ import AuthPage from "./AuthPage"
 import SharePage from "./SharePage"
 import AddChapter from "./components/AddChapter"
 import RichTextEditor from "./components/RichTextEditor"
+import { useAuth } from "./contexts/AuthContext"
 
 const defaultChapters = [
   { id: 1, title: "The Prologue: A Letter to the Reader", subtitle: "The truth behind the silence, and the courage it took to break it", year: "childhood" },
@@ -29,14 +30,13 @@ const defaultChapters = [
 ]
 
 function App() {
-  const [currentUser, setCurrentUser] = useState(null)
-  const [guestUser, setGuestUser] = useState(null) // For viewing other people's books
+  const { user: currentUser, loading, logout } = useAuth()
+  const [guestUser, setGuestUser] = useState(null)
   const [currentPage, setCurrentPage] = useState("auth")
   const [currentChapter, setCurrentChapter] = useState(null)
   const [isTransitioning, setIsTransitioning] = useState(false)
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
   const [userChapters, setUserChapters] = useState([])
-  // Add chapter handler
   const handleAddChapter = (chapter) => {
     const newChapter = {
       id: defaultChapters.length + userChapters.length + 1,
@@ -48,7 +48,6 @@ function App() {
     }
     const updatedChapters = [...userChapters, newChapter]
     setUserChapters(updatedChapters)
-    // Save to localStorage with user-specific key
     const userKey = currentUser.bookId || currentUser.id
     localStorage.setItem(`userChapters_${userKey}`, JSON.stringify(updatedChapters))
   }
@@ -61,7 +60,6 @@ function App() {
     }, 800)
   }
 
-  // Edit chapter handler
   const handleEditChapter = (chapterId, updatedChapter) => {
     const updatedChapters = userChapters.map(chapter => 
       chapter.id === chapterId 
@@ -80,7 +78,6 @@ function App() {
     localStorage.setItem(`userChapters_${userKey}`, JSON.stringify(updatedChapters))
   }
 
-  // Delete chapter handler
   const handleDeleteChapter = (chapterId) => {
     if (window.confirm("Are you sure you want to delete this chapter? This action cannot be undone.")) {
       const updatedChapters = userChapters.filter(chapter => chapter.id !== chapterId)
@@ -90,7 +87,6 @@ function App() {
     }
   }
 
-  // Combine default chapters with user chapters
   const allChapters = [...defaultChapters, ...userChapters]
 
   useEffect(() => {
@@ -101,19 +97,16 @@ function App() {
     return () => window.removeEventListener("mousemove", handleMouseMove)
   }, [])
 
-  // Check for shared book URL parameter
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search)
     const userBookId = urlParams.get('user')
     
     if (userBookId) {
-      // Load guest user data for viewing someone else's book
       const users = JSON.parse(localStorage.getItem("memorialUsers") || "{}")
       const guestUserData = Object.values(users).find(user => user.bookId === userBookId)
       
       if (guestUserData) {
         setGuestUser(guestUserData)
-        // Load guest user's chapters
         const guestChapters = JSON.parse(localStorage.getItem(`userChapters_${userBookId}`) || "[]")
         setUserChapters(guestChapters)
         setCurrentPage("home")
@@ -121,40 +114,21 @@ function App() {
       }
     }
 
-    // Check if user is already logged in
-    const savedUser = localStorage.getItem("currentUser")
-    if (savedUser) {
-      const parsedUser = JSON.parse(savedUser)
-      // Normalize user object for compatibility
+    if (currentUser) {
       const normalizedUser = {
-        ...parsedUser,
-        name: parsedUser.fullName || parsedUser.name,
+        ...currentUser,
+        name: currentUser.fullName || currentUser.name,
       }
-      setCurrentUser(normalizedUser)
-      // Load user's chapters
       const savedChapters = JSON.parse(localStorage.getItem(`userChapters_${normalizedUser.bookId || normalizedUser.id}`) || "[]")
       setUserChapters(savedChapters)
       setCurrentPage("home")
     }
-  }, [])
-
-  const handleLogin = (user) => {
-    // Normalize user object to ensure compatibility with existing code
-    const normalizedUser = {
-      ...user,
-      name: user.fullName || user.name, // Use fullName from API or fallback to name
-    }
-    setCurrentUser(normalizedUser)
-    localStorage.setItem("currentUser", JSON.stringify(normalizedUser))
-    setCurrentPage("home")
-  }
+  }, [currentUser])
 
   const handleLogout = () => {
-    setCurrentUser(null)
+    logout()
     setGuestUser(null)
-    localStorage.removeItem("currentUser")
     setCurrentPage("auth")
-    // Clear URL parameters
     window.history.replaceState({}, document.title, window.location.pathname)
   }
 
@@ -184,11 +158,17 @@ function App() {
     }, 800)
   }
 
-  // Get the active user (current user or guest user)
   const activeUser = guestUser || currentUser
   const isViewingAsGuest = !!guestUser
 
-  // Show authentication page if no user is logged in and not viewing as guest
+  if (loading) {
+    return (
+      <div className="app loading">
+        <div className="loading-message">Loading your story...</div>
+      </div>
+    )
+  }
+
   if (!activeUser) {
     return (
       <div className="app">
@@ -199,7 +179,7 @@ function App() {
             top: mousePosition.y - 10,
           }}
         />
-        <AuthPage onLogin={handleLogin} mousePosition={mousePosition} />
+        <AuthPage mousePosition={mousePosition} />
       </div>
     )
   }

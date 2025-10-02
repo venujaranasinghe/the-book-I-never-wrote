@@ -1,7 +1,5 @@
-// API configuration
-const API_BASE_URL = import.meta.env.VITE_API_URL || '/api';
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5031/api';
 
-// Utility function to handle API responses
 const handleResponse = async (response) => {
   if (!response.ok) {
     const error = await response.text();
@@ -16,15 +14,20 @@ const handleResponse = async (response) => {
   return await response.text();
 };
 
-// API service object
+const getAuthHeaders = () => {
+  const token = localStorage.getItem('token');
+  return {
+    'Content-Type': 'application/json',
+    ...(token && { 'Authorization': `Bearer ${token}` })
+  };
+};
+
 const apiService = {
   // Auth endpoints
   async register(userData) {
     const response = await fetch(`${API_BASE_URL}/user/register`, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(userData),
     });
     return handleResponse(response);
@@ -33,61 +36,76 @@ const apiService = {
   async login(credentials) {
     const response = await fetch(`${API_BASE_URL}/user/login`, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(credentials),
     });
     return handleResponse(response);
   },
 
-  async getProfile(token) {
+  async getProfile() {
     const response = await fetch(`${API_BASE_URL}/user/profile`, {
-      headers: {
-        'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/json',
-      },
+      headers: getAuthHeaders(),
     });
     return handleResponse(response);
   },
 
-  // User-related endpoints
   async getUser(userId) {
     const response = await fetch(`${API_BASE_URL}/user/${userId}`);
     return handleResponse(response);
   },
 
-  async createUser(userData) {
-    const response = await fetch(`${API_BASE_URL}/users`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(userData),
+  // Chapter endpoints
+  async getChapters() {
+    const response = await fetch(`${API_BASE_URL}/chapter`, {
+      headers: getAuthHeaders(),
     });
     return handleResponse(response);
   },
 
-  // Book-related endpoints
-  async getBook(bookId) {
-    const response = await fetch(`${API_BASE_URL}/books/${bookId}`);
-    return handleResponse(response);
-  },
-
-  // Chapter-related endpoints
-  async getChapterContent(chapterId) {
-    const response = await fetch(`${API_BASE_URL}/chapters/${chapterId}/content`);
-    return handleResponse(response);
-  },
-
-  async saveChapterContent(chapterId, content) {
-    const response = await fetch(`${API_BASE_URL}/chapters/${chapterId}/content`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ content }),
+  async getChapter(chapterId) {
+    const response = await fetch(`${API_BASE_URL}/chapter/${chapterId}`, {
+      headers: getAuthHeaders(),
     });
+    return handleResponse(response);
+  },
+
+  async createChapter(chapterData) {
+    const response = await fetch(`${API_BASE_URL}/chapter`, {
+      method: 'POST',
+      headers: getAuthHeaders(),
+      body: JSON.stringify(chapterData),
+    });
+    return handleResponse(response);
+  },
+
+  async updateChapter(chapterId, chapterData) {
+    const response = await fetch(`${API_BASE_URL}/chapter/${chapterId}`, {
+      method: 'PUT',
+      headers: getAuthHeaders(),
+      body: JSON.stringify(chapterData),
+    });
+    return handleResponse(response);
+  },
+
+  async deleteChapter(chapterId) {
+    const response = await fetch(`${API_BASE_URL}/chapter/${chapterId}`, {
+      method: 'DELETE',
+      headers: getAuthHeaders(),
+    });
+    return handleResponse(response);
+  },
+
+  async reorderChapters(chapterOrders) {
+    const response = await fetch(`${API_BASE_URL}/chapter/reorder`, {
+      method: 'POST',
+      headers: getAuthHeaders(),
+      body: JSON.stringify(chapterOrders),
+    });
+    return handleResponse(response);
+  },
+
+  async getPublicChapters(userId) {
+    const response = await fetch(`${API_BASE_URL}/chapter/user/${userId}`);
     return handleResponse(response);
   },
 };

@@ -1,8 +1,8 @@
 import { useState } from "react"
 import "./App.css"
-import apiService from "./services/api"
+import { useAuth } from "./contexts/AuthContext"
 
-export default function AuthPage({ onLogin, mousePosition }) {
+export default function AuthPage({ mousePosition }) {
   const [isLogin, setIsLogin] = useState(true)
   const [formData, setFormData] = useState({
     username: "",
@@ -14,6 +14,7 @@ export default function AuthPage({ onLogin, mousePosition }) {
   })
   const [errors, setErrors] = useState({})
   const [isLoading, setIsLoading] = useState(false)
+  const { login, register } = useAuth()
 
   const handleInputChange = (e) => {
     const { name, value } = e.target
@@ -83,21 +84,12 @@ export default function AuthPage({ onLogin, mousePosition }) {
 
     try {
       if (isLogin) {
-        // Login
         const credentials = {
-          usernameOrEmail: formData.email, // Use email for login
+          usernameOrEmail: formData.email,
           password: formData.password
         }
-        
-        const response = await apiService.login(credentials)
-        
-        // Store token and user data
-        localStorage.setItem("authToken", response.token)
-        localStorage.setItem("userData", JSON.stringify(response.user))
-        
-        onLogin(response.user)
+        await login(credentials)
       } else {
-        // Registration
         const registrationData = {
           username: formData.username,
           email: formData.email,
@@ -106,14 +98,7 @@ export default function AuthPage({ onLogin, mousePosition }) {
           birthYear: parseInt(formData.birthYear),
           bio: formData.bio
         }
-        
-        const response = await apiService.register(registrationData)
-        
-        // Store token and user data
-        localStorage.setItem("authToken", response.token)
-        localStorage.setItem("userData", JSON.stringify(response.user))
-        
-        onLogin(response.user)
+        await register(registrationData)
       }
     } catch (error) {
       console.error("Auth error:", error)
