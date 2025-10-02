@@ -92,3 +92,22 @@ jspm_packages/
 *.backup
 *.bak
 *.tmp
+
+# Vite specific
+.vite/
+
+# TypeScript
+*.tsbuildinfo
+
+# ESLint
+.eslintcache
+
+# Storybook
+storybook-static/
+
+# Testing
+__tests__/coverage/
+
+# OS files
+.DS_Store
+Thumbs.db

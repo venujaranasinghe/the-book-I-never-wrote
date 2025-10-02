@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "HWdVOjNwHU8=",
+  "dgSpecHash": "vV3iX6X/Y34=",
   "success": true,
-  "projectFilePath": "/Users/venujaranasinghe/Documents/GitHub/the-book-I-never-wrote/thebook.api/thebook.api.csproj",
+  "projectFilePath": "/Users/venujaranasinghe/Documents/Github/the-book-I-never-wrote/thebook.api/thebook.api.csproj",
   "expectedPackageFiles": [
     "/Users/venujaranasinghe/.nuget/packages/bcrypt.net-next/4.0.3/bcrypt.net-next.4.0.3.nupkg.sha512",
     "/Users/venujaranasinghe/.nuget/packages/humanizer.core/2.14.1/humanizer.core.2.14.1.nupkg.sha512",

@@ -1,0 +1,69 @@
+# Build results
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+[Bb]in/
+[Oo]bj/
+
+# Visual Studio
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# VS Code
+.vscode/
+
+# Database files
+*.db
+*.sqlite
+*.sqlite3
+*.mdf
+*.ldf
+
+# Logs
+*.log
+logs/
+
+# Cache files
+*.cache
+*.pdb
+*.vspscc
+*.vssscc
+
+# ReSharper
+_ReSharper*/
+*.DotSettings.user
+
+# NCrunch
+*.ncrunch*
+
+# Configuration files with secrets
+appsettings.Local.json
+appsettings.Secrets.json
+*.Development.json
+
+# Environment files
+.env
+.env.local
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.temp
+
+# NuGet
+*.nupkg
+*.snupkg
+packages/
+
+# Test results
+[Tt]est[Rr]esult*/
+*.trx
+*.coverage
+*.coveragexml

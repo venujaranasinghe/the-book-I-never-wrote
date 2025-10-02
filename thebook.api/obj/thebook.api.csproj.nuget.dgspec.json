@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "/Users/venujaranasinghe/Documents/GitHub/the-book-I-never-wrote/thebook.api/thebook.api.csproj": {}
+    "/Users/venujaranasinghe/Documents/Github/the-book-I-never-wrote/thebook.api/thebook.api.csproj": {}
   },
   "projects": {
-    "/Users/venujaranasinghe/Documents/GitHub/the-book-I-never-wrote/thebook.api/thebook.api.csproj": {
+    "/Users/venujaranasinghe/Documents/Github/the-book-I-never-wrote/thebook.api/thebook.api.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/venujaranasinghe/Documents/GitHub/the-book-I-never-wrote/thebook.api/thebook.api.csproj",
+        "projectUniqueName": "/Users/venujaranasinghe/Documents/Github/the-book-I-never-wrote/thebook.api/thebook.api.csproj",
         "projectName": "thebook.api",
-        "projectPath": "/Users/venujaranasinghe/Documents/GitHub/the-book-I-never-wrote/thebook.api/thebook.api.csproj",
+        "projectPath": "/Users/venujaranasinghe/Documents/Github/the-book-I-never-wrote/thebook.api/thebook.api.csproj",
         "packagesPath": "/Users/venujaranasinghe/.nuget/packages/",
-        "outputPath": "/Users/venujaranasinghe/Documents/GitHub/the-book-I-never-wrote/thebook.api/obj/",
+        "outputPath": "/Users/venujaranasinghe/Documents/Github/the-book-I-never-wrote/thebook.api/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/Users/venujaranasinghe/.nuget/NuGet/NuGet.Config"

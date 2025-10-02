@@ -48,7 +48,7 @@ git clone https://github.com/your-username/the-book-i-never-wrote.git
 ```bash
 cd the-book
 npm install
-npm start
+npm run dev
 ```
 ---
 
