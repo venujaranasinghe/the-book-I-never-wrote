@@ -8,6 +8,7 @@ import SharePage from "./SharePage"
 import AddChapter from "./components/AddChapter"
 import RichTextEditor from "./components/RichTextEditor"
 import { useAuth } from "./contexts/AuthContext"
+import apiService from "./services/api"
 
 const defaultChapters = [
   { id: 1, title: "The Prologue: A Letter to the Reader", subtitle: "The truth behind the silence, and the courage it took to break it", year: "childhood" },
@@ -37,19 +38,37 @@ function App() {
   const [isTransitioning, setIsTransitioning] = useState(false)
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
   const [userChapters, setUserChapters] = useState([])
-  const handleAddChapter = (chapter) => {
-    const newChapter = {
-      id: defaultChapters.length + userChapters.length + 1,
-      title: chapter.title,
-      subtitle: chapter.subtitle,
-      year: chapter.year,
-      content: chapter.content,
-      footnotes: chapter.footnotes || [],
+  const handleAddChapter = async (chapter) => {
+    try {
+      // Try API first, fallback to localStorage
+      const chapterData = {
+        title: chapter.title || '',
+        subtitle: chapter.subtitle || '',
+        year: chapter.year || 'custom',
+        content: chapter.content || '',
+        footnotes: Array.isArray(chapter.footnotes) ? chapter.footnotes.join('\n') : (chapter.footnotes || ''),
+        order: 0
+      }
+      
+      try {
+        const newChapter = await apiService.createChapter(chapterData)
+        setUserChapters([...userChapters, newChapter])
+      } catch (apiError) {
+        // Fallback to localStorage with unique ID
+        const newChapter = {
+          id: Date.now(), // Use timestamp as unique ID
+          ...chapterData,
+          footnotes: chapter.footnotes || []
+        }
+        const updatedChapters = [...userChapters, newChapter]
+        setUserChapters(updatedChapters)
+        const userKey = currentUser.bookId || currentUser.id
+        localStorage.setItem(`userChapters_${userKey}`, JSON.stringify(updatedChapters))
+      }
+    } catch (error) {
+      console.error('Error creating chapter:', error)
+      alert('Failed to create chapter. Please try again.')
     }
-    const updatedChapters = [...userChapters, newChapter]
-    setUserChapters(updatedChapters)
-    const userKey = currentUser.bookId || currentUser.id
-    localStorage.setItem(`userChapters_${userKey}`, JSON.stringify(updatedChapters))
   }
 
   const navigateToAddChapter = () => {
@@ -60,30 +79,43 @@ function App() {
     }, 800)
   }
 
-  const handleEditChapter = (chapterId, updatedChapter) => {
-    const updatedChapters = userChapters.map(chapter => 
-      chapter.id === chapterId 
-        ? {
-            ...chapter,
-            title: updatedChapter.title,
-            subtitle: updatedChapter.subtitle,
-            year: updatedChapter.year,
-            content: updatedChapter.content,
-            footnotes: updatedChapter.footnotes || [],
-          }
-        : chapter
-    )
-    setUserChapters(updatedChapters)
-    const userKey = currentUser.bookId || currentUser.id
-    localStorage.setItem(`userChapters_${userKey}`, JSON.stringify(updatedChapters))
+  const handleEditChapter = async (chapterId, updatedChapter) => {
+    try {
+      const chapterData = {
+        ...updatedChapter,
+        footnotes: Array.isArray(updatedChapter.footnotes) ? updatedChapter.footnotes.join('\n') : (updatedChapter.footnotes || '')
+      }
+      await apiService.updateChapter(chapterId, chapterData)
+      const updatedChapters = userChapters.map(chapter => 
+        chapter.id === chapterId ? { ...chapter, ...updatedChapter } : chapter
+      )
+      setUserChapters(updatedChapters)
+    } catch (error) {
+      console.error('Error updating chapter:', error)
+      alert('Failed to update chapter. Please try again.')
+    }
   }
 
-  const handleDeleteChapter = (chapterId) => {
+  const handleDeleteChapter = async (chapterId) => {
     if (window.confirm("Are you sure you want to delete this chapter? This action cannot be undone.")) {
-      const updatedChapters = userChapters.filter(chapter => chapter.id !== chapterId)
-      setUserChapters(updatedChapters)
-      const userKey = currentUser.bookId || currentUser.id
-      localStorage.setItem(`userChapters_${userKey}`, JSON.stringify(updatedChapters))
+      try {
+        await apiService.deleteChapter(chapterId)
+        const updatedChapters = userChapters.filter(chapter => chapter.id !== chapterId)
+        setUserChapters(updatedChapters)
+      } catch (error) {
+        console.error('Error deleting chapter:', error)
+        alert('Failed to delete chapter. Please try again.')
+      }
+    }
+  }
+
+  const loadUserChapters = async () => {
+    try {
+      const chapters = await apiService.getChapters()
+      setUserChapters(chapters || [])
+    } catch (error) {
+      console.error('Error loading chapters:', error)
+      setUserChapters([])
     }
   }
 
@@ -119,8 +151,7 @@ function App() {
         ...currentUser,
         name: currentUser.fullName || currentUser.name,
       }
-      const savedChapters = JSON.parse(localStorage.getItem(`userChapters_${normalizedUser.bookId || normalizedUser.id}`) || "[]")
-      setUserChapters(savedChapters)
+      loadUserChapters()
       setCurrentPage("home")
     }
   }, [currentUser])
@@ -247,6 +278,7 @@ function App() {
       <TableOfContents
         chapters={allChapters}
         user={activeUser}
+        userChapters={userChapters}
         isViewingAsGuest={isViewingAsGuest}
         onChapterClick={navigateToChapter}
         onAddChapterClick={navigateToAddChapter}
@@ -316,7 +348,7 @@ function AddChapterPage({ onAddChapter, onBack, isTransitioning, mousePosition }
   )
 }
 
-function TableOfContents({ chapters, user, isViewingAsGuest, onChapterClick, onAddChapterClick, onEditChapter, onDeleteChapter, isTransitioning, onProfileClick, onLogout }) {
+function TableOfContents({ chapters, user, userChapters, isViewingAsGuest, onChapterClick, onAddChapterClick, onEditChapter, onDeleteChapter, isTransitioning, onProfileClick, onLogout }) {
   const [typedText, setTypedText] = useState("")
   const [editingChapter, setEditingChapter] = useState(null)
   const [editTitle, setEditTitle] = useState("")
@@ -435,7 +467,7 @@ function TableOfContents({ chapters, user, isViewingAsGuest, onChapterClick, onA
 
           <div className="chapters-list">
             {chapters.map((chapter, index) => (
-              <div key={chapter.id} className={`chapter-item vintage-entry ${editingChapter === chapter.id ? 'editing' : ''}`} style={{ animationDelay: `${index * 0.1}s` }}>
+              <div key={index} className={`chapter-item vintage-entry ${editingChapter === chapter.id ? 'editing' : ''}`} style={{ animationDelay: `${index * 0.1}s` }}>
                 {editingChapter === chapter.id ? (
                   // Edit mode
                   <div className="chapter-edit-form">
@@ -512,8 +544,8 @@ function TableOfContents({ chapters, user, isViewingAsGuest, onChapterClick, onA
                       </div>
                     </div>
                     
-                    {/* Show edit/delete buttons only for custom chapters and only for the owner */}
-                    {chapter.year === "custom" && !isViewingAsGuest && (
+                    {/* Show edit/delete buttons only for user chapters and only for the owner */}
+                    {userChapters.some(uc => uc.id === chapter.id) && !isViewingAsGuest && (
                       <div className="chapter-actions">
                         <button
                           onClick={(e) => {
@@ -565,7 +597,7 @@ function TableOfContents({ chapters, user, isViewingAsGuest, onChapterClick, onA
   )
 }
 
-function ChapterPage({ chapter, user, userChapters, onBack, isTransitioning, mousePosition }) {
+function ChapterPage({ chapter, user, userChapters = [], onBack, isTransitioning, mousePosition }) {
   const [scrollProgress, setScrollProgress] = useState(0)
 
   useEffect(() => {
@@ -580,13 +612,17 @@ function ChapterPage({ chapter, user, userChapters, onBack, isTransitioning, mou
     return () => window.removeEventListener("scroll", handleScroll)
   }, [])
 
+  if (!chapter || !user) {
+    return <div>Loading...</div>
+  }
+
   const getChapterContent = (chapterId, user) => {
     // Check if it's a custom chapter
     const customChapter = userChapters.find(ch => ch.id === chapterId)
     if (customChapter) {
       return {
         content: customChapter.content,
-        footnotes: customChapter.footnotes || []
+        footnotes: customChapter.footnotes ? customChapter.footnotes.split('\n').filter(f => f.trim()) : []
       }
     }
 
@@ -628,9 +664,9 @@ Before I was anyone else, I was simply me. And sometimes, that simple truth is t
     }
     
     return contents[chapterId] || {
-      content: `This chapter of ${user.name}'s story is still being written...
+      content: `This chapter of ${user?.name || 'Unknown'}'s story is still being written...
 
-Born in ${user.birthYear}, ${user.name}'s journey continues to unfold. Each day brings new experiences, new insights, and new stories to tell.
+Born in ${user?.birthYear || 'Unknown'}, ${user?.name || 'Unknown'}'s journey continues to unfold. Each day brings new experiences, new insights, and new stories to tell.
 
 The beauty of an unfinished story is that it holds infinite potential. What will happen next? What dreams will be pursued? What challenges will be overcome?
 
@@ -681,7 +717,7 @@ Only time will tell, but one thing is certain: this story is far from over.`,
         </div>
 
         <div className="chapter-text">
-          {content.content.includes('<') ? (
+          {content?.content && content.content.includes('<') ? (
             // Rich text content
             <div 
               className="rich-chapter-content" 
@@ -690,7 +726,7 @@ Only time will tell, but one thing is certain: this story is far from over.`,
             />
           ) : (
             // Plain text content
-            content.content.split("\n\n").map((paragraph, index) => (
+            (content?.content || '').split("\n\n").map((paragraph, index) => (
               <p key={index} className="paragraph vintage-paragraph" style={{ animationDelay: `${index * 0.2}s` }}>
                 {paragraph}
               </p>
@@ -698,7 +734,7 @@ Only time will tell, but one thing is certain: this story is far from over.`,
           )}
         </div>
 
-        {content.footnotes.length > 0 && (
+        {content?.footnotes?.length > 0 && (
           <div className="footnotes">
             <div className="footnote-ornament">
               <div className="footnote-line" />
